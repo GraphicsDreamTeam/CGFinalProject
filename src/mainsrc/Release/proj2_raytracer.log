@@ -1,0 +1,12 @@
+﻿freeglut_static.lib(freeglut_display.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
+LINK : warning LNK4098: defaultlib 'LIBCMTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+freeglut_static.lib(freeglut_display.obj) : error LNK2001: unresolved external symbol ___iob_func
+freeglut_static.lib(freeglut_main.obj) : error LNK2001: unresolved external symbol ___iob_func
+freeglut_static.lib(freeglut_joystick.obj) : error LNK2001: unresolved external symbol _sprintf
+freeglut_static.lib(freeglut_main.obj) : error LNK2001: unresolved external symbol _vfprintf
+libpng.lib(pngerror.obj) : error LNK2001: unresolved external symbol __imp____iob_func
+libpng.lib(pngrutil.obj) : error LNK2001: unresolved external symbol __imp____iob_func
+libpng.lib(pngwutil.obj) : error LNK2001: unresolved external symbol __imp____iob_func
+jpeg.lib(jerror.obj) : error LNK2001: unresolved external symbol __imp____iob_func
+jpeg.lib(jerror.obj) : error LNK2001: unresolved external symbol __imp__sprintf
+S:\OneDrive\Education Data\College\University of Florida\Spring 2017\CAP4730 - Computational Structures in Computer Graphics\Projects\Project 2\src\mainsrc\Release\proj2_raytracer.exe : fatal error LNK1120: 5 unresolved externals

@@ -1,0 +1,25 @@
+﻿  STColor3f.cpp
+  STColor4f.cpp
+  STColor4ub.cpp
+  STFont.cpp
+  STImage.cpp
+  STImage_jpeg.cpp
+  STImage_png.cpp
+  STImage_ppm.cpp
+  STJoystick.cpp
+  STJoystick_win32.cpp
+  STPoint2.cpp
+  STPoint3.cpp
+  STShaderProgram.cpp
+  STShape.cpp
+..\STShape.cpp(499): warning C4838: conversion from 'unsigned int' to 'const int' requires a narrowing conversion
+  STTexture.cpp
+  STTimer.cpp
+  STTriangleMesh.cpp
+..\STTriangleMesh.cpp(358): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  STVector2.cpp
+  STVector3.cpp
+  tiny_obj_loader.cpp
+  Generating Code...
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1357,5): warning MSB8012: TargetPath(S:\OneDrive\Education Data\College\University of Florida\Spring 2017\CAP4730 - Computational Structures in Computer Graphics\Projects\Project 2\src\libst\vc2008\../lib\libst.lib) does not match the Library's OutputFile property value (S:\OneDrive\Education Data\College\University of Florida\Spring 2017\CAP4730 - Computational Structures in Computer Graphics\Projects\Project 2\src\libst\lib\Release\libst.lib). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+  libst.vcxproj -> S:\OneDrive\Education Data\College\University of Florida\Spring 2017\CAP4730 - Computational Structures in Computer Graphics\Projects\Project 2\src\libst\vc2008\../lib\libst.lib

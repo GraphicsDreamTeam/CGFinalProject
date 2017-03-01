@@ -1,0 +1,27 @@
+﻿  mainsrc_proj2.cpp
+s:\onedrive\education data\college\university of florida\spring 2017\cap4730 - computational structures in computer graphics\projects\project 2\src\mainsrc\mainsrc_proj2.cpp(206): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+s:\onedrive\education data\college\university of florida\spring 2017\cap4730 - computational structures in computer graphics\projects\project 2\src\mainsrc\mainsrc_proj2.cpp(207): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+mainsrc_proj2.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
+LINK : warning LNK4098: defaultlib 'LIBCMTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+MSVCRTD.lib(initializers.obj) : warning LNK4098: defaultlib 'msvcrt.lib' conflicts with use of other libs; use /NODEFAULTLIB:library
+libpng.lib(pngrtran.obj) : warning LNK4217: locally defined symbol __snprintf imported in function _png_set_rgb_to_gray
+libpng.lib(pngwutil.obj) : warning LNK4217: locally defined symbol __snprintf imported in function _png_write_IHDR
+libpng.lib(png.obj) : warning LNK4217: locally defined symbol __snprintf imported in function _png_convert_to_rfc1123
+libpng.lib(pngread.obj) : warning LNK4217: locally defined symbol __snprintf imported in function _png_read_init_3
+libpng.lib(pngwrite.obj) : warning LNK4217: locally defined symbol __snprintf imported in function _png_create_write_struct_2
+libpng.lib(pngrutil.obj) : warning LNK4217: locally defined symbol __snprintf imported in function _png_handle_IHDR
+libpng.lib(pngerror.obj) : warning LNK4217: locally defined symbol _fprintf imported in function _png_default_error
+libpng.lib(pngrutil.obj) : warning LNK4217: locally defined symbol _fprintf imported in function _png_crc_finish
+libpng.lib(pngwutil.obj) : warning LNK4049: locally defined symbol _fprintf imported
+jpeg.lib(jerror.obj) : warning LNK4049: locally defined symbol _fprintf imported
+jpeg.lib(jmemmgr.obj) : warning LNK4217: locally defined symbol _sscanf imported in function _jinit_memory_mgr
+freeglut_static.lib(freeglut_display.obj) : error LNK2019: unresolved external symbol ___iob_func referenced in function _glutSwapBuffers
+freeglut_static.lib(freeglut_main.obj) : error LNK2001: unresolved external symbol ___iob_func
+freeglut_static.lib(freeglut_joystick.obj) : error LNK2019: unresolved external symbol _sprintf referenced in function _fghJoystickGetOEMProductName
+freeglut_static.lib(freeglut_main.obj) : error LNK2019: unresolved external symbol _vfprintf referenced in function _fgError
+libpng.lib(pngerror.obj) : error LNK2019: unresolved external symbol __imp____iob_func referenced in function _png_default_error
+libpng.lib(pngrutil.obj) : error LNK2001: unresolved external symbol __imp____iob_func
+libpng.lib(pngwutil.obj) : error LNK2001: unresolved external symbol __imp____iob_func
+jpeg.lib(jerror.obj) : error LNK2001: unresolved external symbol __imp____iob_func
+jpeg.lib(jerror.obj) : error LNK2019: unresolved external symbol __imp__sprintf referenced in function _format_message
+S:\OneDrive\Education Data\College\University of Florida\Spring 2017\CAP4730 - Computational Structures in Computer Graphics\Projects\Project 2\src\mainsrc\Debug\proj2_raytracer.exe : fatal error LNK1120: 5 unresolved externals

@@ -1,0 +1,16 @@
+﻿  Camera.cpp
+  Intersection.cpp
+  Light.cpp
+  LinearSolver.cpp
+  Ray.cpp
+  RayTracer.cpp
+RayTracer.cpp(21): warning C4305: 'initializing': truncation from 'double' to 'float'
+RayTracer.cpp(54): warning C4244: 'argument': conversion from 'float' to 'STColor4ub::Component', possible loss of data
+  RGBR_f.cpp
+  Scene.cpp
+  Shader.cpp
+  Sphere.cpp
+  Surface.cpp
+  Triangle.cpp
+  utilities.cpp
+  rtlib.vcxproj -> S:\OneDrive\Education Data\College\University of Florida\Spring 2017\CAP4730 - Computational Structures in Computer Graphics\Projects\Project 2\src\librt\lib\Release\librt.lib
