@@ -34,7 +34,7 @@ ifeq ($(ARCH), Linux)
 # version of jpeglib.h in /usr/pubsw on the myth machines doesn't
 # contain an extern "C" declaration.  We want the one in /usr/include
 #
-INCDIRS          += /usr/include ext/glew/include ext/freetype/include
+INCDIRS          += /usr/include ext/glew/include
 FILES            += STJoystick_linux
 endif
 

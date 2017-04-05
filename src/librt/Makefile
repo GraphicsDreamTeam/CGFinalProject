@@ -33,7 +33,7 @@ ifeq ($(ARCH), Linux)
 # version of jpeglib.h in /usr/pubsw on the myth machines doesn't
 # contain an extern "C" declaration.  We want the one in /usr/include
 #
-INCDIRS          += /usr/include ext/glew/include ext/freetype/include  ../libst/include
+INCDIRS          += /usr/include ext/glew/include ../libst/include
 endif
 
 #
@@ -41,7 +41,7 @@ endif
 
 # a default install with fink will put them here
 
-# 
+#
 ifeq ($(ARCH), Darwin)
 INCDIRS          += /sw/include /opt/local/include
 FILES            += STJoystick_darwin
@@ -64,7 +64,7 @@ all: mkdirs $(OUTPUTDIR)/$(TARGET)
 
 
 $(OUTPUTDIR)/$(TARGET): $(OBJS)
-	ar -rc $@ $(OBJS) 
+	ar -rc $@ $(OBJS)
 	ranlib $@
 
 mkdirs:
