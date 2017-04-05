@@ -103,9 +103,13 @@ OBJS       :=  $(addsuffix $(OBJSUFFIX), $(FILES))
 all: $(TARGET)
 
 $(LIBST_DIR)/libst.a:
+	clear
+	@echo Beginning compilation of libst.
 	(cd $(LIBST_ROOT); $(MAKE))
 
 $(RTLIB_DIR)/rtlib.a:
+	clear
+	@echo Beginning compilation of librt.
 	(cd $(RTLIB_ROOT); $(MAKE))
 
 $(TARGET): $(OBJS) $(LIBST_DIR)/libst.a  $(RTLIB_DIR)/rtlib.a

@@ -35,7 +35,7 @@ ifeq ($(ARCH), Linux)
 # contain an extern "C" declaration.  We want the one in /usr/include
 #
 INCDIRS          += /usr/include ext/glew/include
-FILES            += STJoystick_linux
+# FILES            += STJoystick_linux
 endif
 
 #
@@ -46,7 +46,7 @@ endif
 #
 ifeq ($(ARCH), Darwin)
 INCDIRS          += /sw/include /opt/local/include
-FILES            += STJoystick_darwin
+# FILES            += STJoystick_darwin
 endif
 
 
@@ -66,6 +66,8 @@ all: mkdirs $(OUTPUTDIR)/$(TARGET)
 
 
 $(OUTPUTDIR)/$(TARGET): $(OBJS)
+	clear
+	@echo Building libst.
 	ar -rc $@ $(OBJS)
 	ranlib $@
 

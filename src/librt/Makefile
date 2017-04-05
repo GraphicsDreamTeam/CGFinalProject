@@ -44,7 +44,7 @@ endif
 #
 ifeq ($(ARCH), Darwin)
 INCDIRS          += /sw/include /opt/local/include
-FILES            += STJoystick_darwin
+# FILES            += STJoystick_darwin
 endif
 
 
