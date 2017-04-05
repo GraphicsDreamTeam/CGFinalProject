@@ -21,10 +21,10 @@ LDFLAGS		 :=
 .PHONY : clean release mkdirs
 
 
-FILES 		 :=  STColor3f STColor4f STColor4ub STFont STImage STImage_jpeg STImage_png STImage_ppm STPoint2 STPoint3 STJoystick STMatrix4 STShaderProgram STShape STTexture STTimer STVector2 STVector3 STTriangleMesh tiny_obj_loader
+FILES 		 :=  STColor3f STColor4f STColor4ub STImage STImage_jpeg STImage_png STImage_ppm STPoint2 STPoint3 STJoystick STMatrix4 STShaderProgram STShape STTexture STTimer STVector2 STVector3 STTriangleMesh tiny_obj_loader
 
 INCDIRS          := . include
-LIBDIRS          := 
+LIBDIRS          :=
 
 
 ARCH=$(shell uname | sed -e 's/-.*//g')
@@ -43,7 +43,7 @@ endif
 
 # a default install with fink will put them here
 
-# 
+#
 ifeq ($(ARCH), Darwin)
 INCDIRS          += /sw/include /opt/local/include
 FILES            += STJoystick_darwin
@@ -66,7 +66,7 @@ all: mkdirs $(OUTPUTDIR)/$(TARGET)
 
 
 $(OUTPUTDIR)/$(TARGET): $(OBJS)
-	ar -rc $@ $(OBJS) 
+	ar -rc $@ $(OBJS)
 	ranlib $@
 
 mkdirs:

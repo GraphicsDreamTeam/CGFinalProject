@@ -98,7 +98,10 @@ void Setup(void)
     pScene->AddLight(Light(STVector3(-5, -8.66, -5), RGBR_f(0, 0, 255, 255), 40, "Light3"));
     // pScene->AddLight(Light(STVector3(-5, -8.66, -30), RGBR_f(255, 255, 255, 255), 30, "Light3"));
 
+    Sphere* sphere2 = new Sphere(STVector3(1, 0, -0.95), 0.35, RGBR_f(255, 255, 255, 255));
     Sphere* sphere3 = new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255));
+
+    pScene->AddSurface(sphere2);
     pScene->AddSurface(sphere3);
 
     pRayTracer = new RayTracer();
@@ -112,16 +115,16 @@ void Setup(void)
 //
 void ReshapeCallback(int w, int h)
 {
-	gWindowSizeX = w;
+    gWindowSizeX = w;
     gWindowSizeY = h;
 
     glViewport(0, 0, gWindowSizeX, gWindowSizeY);
 
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-	// Set up a perspective projection
+    // Set up a perspective projection
     float aspectRatio = (float) gWindowSizeX / (float) gWindowSizeY;
-	gluPerspective(30.0f, aspectRatio, .1f, 10000.0f);
+    gluPerspective(30.0f, aspectRatio, .1f, 10000.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -170,8 +173,8 @@ void KeyCallback(unsigned char key, int x, int y)
     case 'u':
         pScene->GetCamera()->ResetUp();
         break;
-	case 'q':
-		exit(0);
+    case 'q':
+        exit(0);
     default:
         break;
     }
