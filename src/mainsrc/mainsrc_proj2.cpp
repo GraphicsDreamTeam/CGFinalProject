@@ -43,29 +43,9 @@ int gMouseButton = -1;
 static int gWindowSizeX = 0;
 static int gWindowSizeY = 0;
 
-
-// Function Prototypes
-// TO DO: Proj2 raytracer
-// Nothing to do here but note:
-// These are not actually used in this
-// app unless you were to create a glut
-// window loop in the main and add a display callback
-// You do not need this but it is available
-//--------------------------------------
-void MouseMotionCallback(int x, int y);
-void MouseCallback(int button, int state, int x, int y);
-void KeyCallback(unsigned char key, int x, int y);
 void SpecialKeyCallback(int key, int x, int y);
 void ReshapeCallback(int w, int h);
 void Setup(void);
-void EnvironmentMapping(void);
-
-
-
-
-
-
-
 
 //---------------------------------------------------------------------
 // Scene functions
@@ -79,8 +59,7 @@ void Setup(void)
 
     pScene = new Scene();
 
-    STVector3 cameraPosition(0, 0, -2);
-    // STVector3 cameraPosition(0, 0, 10);
+    STVector3 cameraPosition(0, 0, -5);
     STVector3 cameraLookAt = STVector3::Zero - cameraPosition;
     cameraLookAt.Normalize();
 
@@ -91,43 +70,17 @@ void Setup(void)
 
     pScene->SetBackgroundColor(RGBR_f(0, 0, 0, 1));
 
-    // pScene->AddLight(Light(STVector3(-10, 0, -45), RGBR_f(255, 0, 0, 255), 25, "Light1")); // Begind
-    // pScene->AddLight(Light(STVector3(10, -2.5, -39), RGBR_f(0, 255, 0, 255), 25, "Light1")); // In front
     pScene->AddLight(Light(STVector3(10, 0, -5), RGBR_f(255, 0, 0, 255), 40, "Light1"));
-    pScene->AddLight(Light(STVector3(-5, 8.66, -5), RGBR_f(0, 255, 0, 255), 40, "Light2"));
-    pScene->AddLight(Light(STVector3(-5, -8.66, -5), RGBR_f(0, 0, 255, 255), 40, "Light3"));
-    // pScene->AddLight(Light(STVector3(-5, -8.66, -30), RGBR_f(255, 255, 255, 255), 30, "Light3"));
+    pScene->AddLight(Light(STVector3(-10, 0, -5), RGBR_f(0, 0, 255, 255), 40, "Light3"));
 
-    Sphere* sphere2 = new Sphere(STVector3(1, 0, -0.95), 0.35, RGBR_f(255, 255, 255, 255));
-    Sphere* sphere3 = new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255));
+    Sphere* sphere1 = new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255));
+    Sphere* sphere2 = new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255));
 
+    pScene->AddSurface(sphere1);
     pScene->AddSurface(sphere2);
-    pScene->AddSurface(sphere3);
 
     pRayTracer = new RayTracer();
 
-}
-
-
-//
-// Reshape the window and record the size so
-// that we can use it for screenshots.
-//
-void ReshapeCallback(int w, int h)
-{
-    gWindowSizeX = w;
-    gWindowSizeY = h;
-
-    glViewport(0, 0, gWindowSizeX, gWindowSizeY);
-
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
-    // Set up a perspective projection
-    float aspectRatio = (float) gWindowSizeX / (float) gWindowSizeY;
-    gluPerspective(30.0f, aspectRatio, .1f, 10000.0f);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
 }
 
 
@@ -183,65 +136,6 @@ void KeyCallback(unsigned char key, int x, int y)
 }
 
 
-/**
- * Mouse event handler
- */
-void MouseCallback(int button, int state, int x, int y)
-{
-    if (button == GLUT_LEFT_BUTTON
-        || button == GLUT_RIGHT_BUTTON
-        || button == GLUT_MIDDLE_BUTTON)
-    {
-        gMouseButton = button;
-    } else
-    {
-        gMouseButton = -1;
-    }
-
-    if (state == GLUT_UP)
-    {
-        gPreviousMouseX = -1;
-        gPreviousMouseY = -1;
-    }
-}
-
-
-/**
- * Mouse active motion callback (when button is pressed)
- */
-void MouseMotionCallback(int x, int y)
-{
-    if (gPreviousMouseX >= 0 && gPreviousMouseY >= 0)
-    {
-        //compute delta
-        float deltaX = x-gPreviousMouseX;
-        float deltaY = y-gPreviousMouseY;
-        gPreviousMouseX = x;
-        gPreviousMouseY = y;
-
-        //orbit, strafe, or zoom
-        if (gMouseButton == GLUT_LEFT_BUTTON)
-        {
-            pScene->GetCamera()->Rotate(deltaX, deltaY);
-        }
-        else if (gMouseButton == GLUT_MIDDLE_BUTTON)
-        {
-            pScene->GetCamera()->Strafe(deltaX, deltaY);
-        }
-        else if (gMouseButton == GLUT_RIGHT_BUTTON)
-        {
-            pScene->GetCamera()->Zoom(deltaY);
-        }
-
-    } else
-    {
-        gPreviousMouseX = x;
-        gPreviousMouseY = y;
-    }
-
-}
-
-
 
 // If the commandline input is incorrect, notifies the user.
 void usage(const char *myname)
@@ -274,37 +168,16 @@ RenderMode parseArgs(int argc, char **argv)
     return(mode);
 }
 
-
-
-//-----------------------------------------------
-// Proj2 Ray Tracer
-// This function follows the main
-// logic of your rendering program.
-// The commandline input is a single integer that specifies the render mode.
-// The render modes are defined in the RenderMode enum in file Defs.h
-// Example
-// >> proj2_raytracer 1
-//
-//-----------------------------------------------
 int main(int argc, char** argv)
 {
 
-    // TO DO: Proj2 raytracer
-    // Set the render mode.
-    // 1. Here, we read in the render mode.
-    //    The render modes are defined in the RenderMode enum in file Defs.h
-    //    If you make any changes to RenderMode or input parameters, you have to
-    //    update parseArgs(int argc, char **argv).
-    //------------------------------------------------
     RenderMode mode = parseArgs(argc, argv);
-    //------------------------------------------------
 
     // Initializes the scene
     Setup();
 
     // run the ray tracer
     pRayTracer->Run(pScene, imageSize, "output.png", mode);
-
 
     return 0;
 }
