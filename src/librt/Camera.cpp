@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string>
 #include "STMatrix4.h"
+#include "STVector3.h"
 
 Camera::Camera(STVector3 lookat, STVector3 position, STVector3 up)
 {

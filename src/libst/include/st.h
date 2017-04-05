@@ -16,7 +16,6 @@
 #include "STColor3f.h"
 #include "STColor4f.h"
 #include "STColor4ub.h"
-#include "STFont.h"
 #include "STImage.h"
 #include "STJoystick.h"
 #include "STMatrix4.h"

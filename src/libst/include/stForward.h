@@ -13,7 +13,6 @@
 struct STColor3f;
 struct STColor4f;
 struct STColor4ub;
-class STFont;
 class STImage;
 class STJoystick;
 struct STMatrix4;
