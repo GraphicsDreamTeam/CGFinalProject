@@ -113,7 +113,7 @@ Shader::~Shader()
 {
 }
 
-
+//testing le things and stuff
 // TO DO: Proj2 raytracer
 //          - Add shading functions for special effects.
 // 1. Declare functions for your special effects in the .h file
