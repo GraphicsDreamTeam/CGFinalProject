@@ -138,7 +138,7 @@ void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, Rend
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
 
     // end
-    std::cout << "DONE... (Elapsed time: " << duration * 1000 << " ms, hit: " << ((((double) numRaysHit) / ((double) numRays)) * 100) << "%)" << std::endl;
+    std::cout << "DONE... (Elapsed time: " << duration * 1000 << " ms, hit: " << ((((double) numRaysHit) / ((double) numRays)) * 100) << "% (" << numRaysHit << " / " << numRays << "))" << std::endl;
 
     // save
     pImg->Save(fName);

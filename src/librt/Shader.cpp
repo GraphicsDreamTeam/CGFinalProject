@@ -39,9 +39,11 @@ RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light
         case PHONG:
             color = Phong(pIntersection, lightDirection, light);
             break;
+        case HIT:
+            color = Hit(pIntersection, lightDirection, light);
+            break;
         default:
-            color = Lambertian(pIntersection, lightDirection, light);
-            // color = Phong(pIntersection, lightDirection, light);
+            color = Hit(pIntersection, lightDirection, light);
             break;
         }
 
@@ -53,6 +55,15 @@ RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light
     //---------------------------------------------------------
 
     return(color);
+}
+
+// Implements a simple red colorer if we hit something.
+RGBR_f Shader::Hit(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
+{
+    assert(pIntersection);
+    assert(lightDirection);
+
+    return RGBR_f(255, 0, 0, 1);
 }
 
 // Implements diffuse shading using the lambertian lighting model

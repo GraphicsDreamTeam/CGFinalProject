@@ -32,11 +32,6 @@ protected:
 
 
 
-    // TO DO: Proj2 raytracer
-    //          - Note: You have to manage your intersection list
-    // 1. Know when to clear and add items to your list
-    //------------------------------------------------
-    //------------------------------------------------
     IntersectionList                m_intersections;
 
     STVector3                       m_center;

@@ -17,13 +17,9 @@
 // render modes for the raytracer class
 // determines the type of image created
 typedef enum {
-    LAMBERTIAN      = 1,
-    PHONG           = 2,
-    MIRROR          = 3,
-    ENVIRONMENTMAP  = 4,
-    EFFECT_1        = 5,
-    EFFECT_2        = 6,
-    EFFECT_3        = 7
+    HIT				= 1,
+    LAMBERTIAN      = 2,
+    PHONG           = 3
 }RenderMode;
 
 
@@ -34,7 +30,7 @@ typedef enum {
 //    special effect. Some examples are added below.
 //------------------------------------------------
 //------------------------------------------------
-const double EPSILON = 1.0e-6; 
+const double EPSILON = 1.0e-6;
 const double REFRACT_INDEX_VACUUM           = 1.0000;
 const double REFRACT_INDEX_AIR              = 1.0003;
 const double REFRACT_INDEX_WATER            = 1.3330;

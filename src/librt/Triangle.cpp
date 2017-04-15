@@ -1,15 +1,18 @@
 //----------------------------------------------------------------
 // Triangle.cpp
 // Copyright: Corey Toler-Franklin, University of Florida
-// 
+//
 // Triangle surface class
 // This class is represented by the surface enclosed by 3 points:m_a, m_b, m_c
 //----------------------------------------------------------------
 #include "Triangle.h"
 #include "LinearSolver.h"
 #include "defs.h"
-
-
+#include "STVector3.h"
+#include <cmath>
+#include "utilities.h"
+#include <algorithm>
+#include <stdio.h>
 
 // contructor
 Triangle::Triangle(void)
@@ -18,6 +21,9 @@ Triangle::Triangle(void)
 
 }
 
+Triangle::Triangle(STVector3 m_a_in, STVector3 m_b_in, STVector3 m_c_in, RGBR_f color_in) : m_a(m_a_in), m_b(m_b_in), m_c(m_c_in) {
+    SetColor(color_in);
+}
 
 // clean up
 Triangle::~Triangle()
@@ -37,7 +43,7 @@ bool Triangle::IntersectionSolver(Ray ray, STVector3 A, STVector3 B, STVector3 C
 {
     LinearSolver L;
     bool bFoundSolution = false;
-    
+
     // TO DO: Proj2 raytracer
     //          - Solve for intersections.
     // 1. Use barycentric coordinates and linear equations to solve for intersections
@@ -50,8 +56,6 @@ bool Triangle::IntersectionSolver(Ray ray, STVector3 A, STVector3 B, STVector3 C
     return(bFoundSolution);
 }
 
-
-
 //----------------------------------------------------------------------------
 // Compute the closest intersection point with the ray
 // If an intersection exist, return true; otherwise false
@@ -59,22 +63,72 @@ bool Triangle::IntersectionSolver(Ray ray, STVector3 A, STVector3 B, STVector3 C
 //-----------------------------------------------------------------------------
 bool Triangle::FindIntersection (Ray ray, Intersection *pIntersection)
 {
-    bool bFound = false;
+    // First, determine where we hit the plane, if at all.
+    // Three scenarios can occur
+    // 1. We hit it once (what we care about), Good!
+    // 2. We hit it many times (we're parallel and in a position to connect with it), ???
+    // 3. We never hit it (the ray position and direction mean it will never intersect), ignore
 
-    // TO DO: Proj2 raytracer
-    //          - Find Intersections.
-    // 1. Find intersections with this object along the Ray ray
-    //    Use barycentric coordinates and linear equations
-    // 2. Store the results of the intersection 
-    // 3. If found return true, otherwise, return false
-    // NOTE: The Intersection pIntersection should store:
-    // hit point, surface normal, the time t of the ray at the hit point
-    // and the surface being hit
-    //------------------------------------------------
+    double intersectionTop = STVector3::Dot(ComputeNormalVector(), (m_a - ray.Origin()));
+    double intersectionBottom = STVector3::Dot(ComputeNormalVector(), (ray.Direction() - ray.Origin()));
 
-    //------------------------------------------------------
+    if (!intersectionBottom) // The ray is parallel to the plane, ignore in all cases.
+    {
+        std::cout << "Parallel to plane" << std::endl;
+        return false;
+    }
 
-    return(bFound);
+    double r = intersectionTop / intersectionBottom;
+
+    if (r < 0) // We're behind the plane, no dice.
+    {
+        std::cout << "Behind plane" << std::endl;
+        return false;
+    }
+
+    // If control reaches here, we've hit the plane, hooray!
+
+    STVector3 P = ray.Origin() + ray.Direction() * r; // The point on the plane that we hit!
+
+    // Next assunimg we are valid, we now have a point that we hit and need to determine if
+    // it happens within the bounds of the triangle
+
+    double ABCArea = findTriangleArea(m_a, m_b, m_c);
+    double ABPArea = findTriangleArea(m_a, m_b, P);
+    double BCPArea = findTriangleArea(m_b, m_c, P);
+    double CAPArea = findTriangleArea(m_c, m_a, P);
+
+    double u = CAPArea / ABCArea;
+    double v = ABPArea / ABCArea;
+    double w = BCPArea / ABCArea;
+
+    double maxValue = std::max<double>(u, std::max<double>(v, w));
+    double minValue = std::min<double>(u, std::min<double>(v, w));
+
+    // std::cout << m_a.x << " " << m_a.y << " " << m_a.z << std::endl;
+    // std::cout << P.x << " " << P.y << " " << P.z << std::endl;
+
+    // std::cout << ABPArea << std::endl;
+
+    if ((u < -0.5 && u > 1.5) | (v < -0.5 && v > 1.5) | (w < -0.5 && w > 1.5)) {
+        std::cout << u << " | " << v << " | " << w << std::endl;
+    }
+
+    if (maxValue > 1 || minValue < 0) // Point lies outside the triangle
+    {
+        return false;
+    }
+
+    // Finally, if control reachest here, we've hit the plane, and it's within the triangle.
+    // Now we load the information we need into the intersection object
+
+    pIntersection->distanceSqu = pow(r, 2.0);
+    pIntersection->surface = this;
+    pIntersection->point = P;
+    pIntersection->normal = ComputeNormalVector();
+    pIntersection->cameraLookingDirection = ray.Direction();
+
+    return true;
 }
 
 //-------------------------------------------------
@@ -82,17 +136,12 @@ bool Triangle::FindIntersection (Ray ray, Intersection *pIntersection)
 //-------------------------------------------------
 STVector3 Triangle::ComputeNormalVector(void)
 {
-    STVector3 normal(0,0,1);
+    STVector3 ab = m_a - m_b;
+    STVector3 bc = m_b - m_c;
+    STVector3 normal = STVector3::Cross(ab, bc);
+    normal.Normalize();
 
-    // TO DO: Proj2 raytracer
-    //          - Compute the surface normal.
-    // 1. Compute the surface surface normal to the
-    // plane whose points are m_a, m_b, and m_c
-    //------------------------------------------------
-
-    //---------------------------------------------------
-
-    return(normal);
+    return normal;
 }
 
 
@@ -101,6 +150,6 @@ STVector3 Triangle::ComputeNormalVector(void)
 // 1. Add any object specific properties you need
 //    to create your special effects (e.g. specularity, transparency...)
 // 2. Remember to declare these in your .h file
-// 
+//
 //---------------------------------------------------------
 //---------------------------------------------------------

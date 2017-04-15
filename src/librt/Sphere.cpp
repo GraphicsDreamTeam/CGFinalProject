@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <string>
 #include "defs.h"
-#include <cmath>
 #include "RGBR_f.h"
 #include <cmath>
 
@@ -47,28 +46,28 @@ bool Sphere::FindIntersection(Ray ray, Intersection *pIntersection)
 
     if (d > m_radius) {
         return false;
-    } else if (d == m_radius) { // tangent, one hit
+    } else if (d == m_radius) { // tangent, one hit, but we ignore that
 
-        double t = t_ca;
-        STVector3 point = ray.Origin() + ray.Direction()*t;
-        STVector3 normal = (point - m_center);
-        normal.Normalize();
+        // double t = t_ca;
+        // STVector3 point = ray.Origin() + ray.Direction()*t;
+        // STVector3 normal = (point - m_center);
+        // normal.Normalize();
 
-        pIntersection->distanceSqu = pow(t, 2.0);
-        pIntersection->surface = this;
-        pIntersection->point = point;
-        pIntersection->normal = normal;
-        pIntersection->cameraLookingDirection = ray.Direction();
+        // pIntersection->distanceSqu = pow(t, 2.0);
+        // pIntersection->surface = this;
+        // pIntersection->point = point;
+        // pIntersection->normal = normal;
+        // pIntersection->cameraLookingDirection = ray.Direction();
 
-        return true;
+        return false;
     } else { // two hits
 
-        double t_hc = sqrt(pow(m_radius, 2.0) - pow(d, 2.0));// / ray.Direction().Length();
+        double t_hc = sqrt(pow(m_radius, 2.0) - pow(d, 2.0));
 
         double t0 = t_ca - t_hc;
         double t1 = t_ca + t_hc;
         double t = t0 < t1 ? t0 : t1;
-        STVector3 point = ray.Origin() + ray.Direction()*t;
+        STVector3 point = ray.Origin() + ray.Direction() * t;
         STVector3 normal = (point - m_center);
         normal.Normalize();
 

@@ -43,6 +43,7 @@ private:
 
     RenderMode                          m_mode;
 
+    RGBR_f                           Hit                           (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
     RGBR_f                           Lambertian                      (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
     RGBR_f                           Phong                           (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
 

@@ -22,6 +22,7 @@ class Triangle : public Surface
 
 public:
                                 Triangle                        (void);
+                                Triangle                        (STVector3 m_a_in, STVector3 m_b_in, STVector3 m_c_in, RGBR_f color_in);
                                 ~Triangle                       (void);
 
     bool                        FindIntersection                (Ray ray, Intersection *pIntersection);
@@ -41,16 +42,6 @@ private:
     bool                        IntersectionSolver              (Ray ray, STVector3 A, STVector3 B, STVector3 C, double u, double v, double w);
 
     STVector3                   ComputeNormalVector             (void);
-
-
-    // TO DO: Proj2 raytracer
-    //          - Add object specific properties.
-    // 1. Add any object specific properties you need
-    //    to create your special effects
-    // 2. Remember to initialize these properties in the .cpp file
-    //---------------------------------------------------------
-    //---------------------------------------------------------
-
 
 };
 
