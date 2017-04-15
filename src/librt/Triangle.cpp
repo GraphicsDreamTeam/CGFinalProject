@@ -69,26 +69,33 @@ bool Triangle::FindIntersection (Ray ray, Intersection *pIntersection)
     // 2. We hit it many times (we're parallel and in a position to connect with it), ???
     // 3. We never hit it (the ray position and direction mean it will never intersect), ignore
 
-    double intersectionTop = STVector3::Dot(ComputeNormalVector(), (m_a - ray.Origin()));
-    double intersectionBottom = STVector3::Dot(ComputeNormalVector(), (ray.Direction() - ray.Origin()));
+    STVector3 ba = m_b - m_a;
+    STVector3 ca = m_c - m_a;
 
-    if (!intersectionBottom) // The ray is parallel to the plane, ignore in all cases.
+    STVector3 N = STVector3::Cross(ba, ca);
+
+    double denom = STVector3::Dot(N, N);
+
+    double intersectionBottom = STVector3::Dot(N, ray.Direction());
+
+    if (!intersectionBottom) // The ray is parallel to the plane and possibly tangential, ignore in all cases.
     {
-        std::cout << "Parallel to plane" << std::endl;
         return false;
     }
 
-    double r = intersectionTop / intersectionBottom;
+    double d = STVector3::Dot(N, m_a);
+    double intersectionTop = STVector3::Dot(N, ray.Origin()) + d;
 
-    if (r < 0) // We're behind the plane, no dice.
+    double t = -intersectionTop / intersectionBottom;
+
+    if (t < 0) // We're behind the plane, no dice.
     {
-        std::cout << "Behind plane" << std::endl;
         return false;
     }
 
     // If control reaches here, we've hit the plane, hooray!
 
-    STVector3 P = ray.Origin() + ray.Direction() * r; // The point on the plane that we hit!
+    STVector3 P = ray.Origin() + ray.Direction() * t; // The point on the plane that we hit!
 
     // Next assunimg we are valid, we now have a point that we hit and need to determine if
     // it happens within the bounds of the triangle
@@ -122,7 +129,7 @@ bool Triangle::FindIntersection (Ray ray, Intersection *pIntersection)
     // Finally, if control reachest here, we've hit the plane, and it's within the triangle.
     // Now we load the information we need into the intersection object
 
-    pIntersection->distanceSqu = pow(r, 2.0);
+    pIntersection->distanceSqu = pow(t, 2.0);
     pIntersection->surface = this;
     pIntersection->point = P;
     pIntersection->normal = ComputeNormalVector();
@@ -136,9 +143,9 @@ bool Triangle::FindIntersection (Ray ray, Intersection *pIntersection)
 //-------------------------------------------------
 STVector3 Triangle::ComputeNormalVector(void)
 {
-    STVector3 ab = m_a - m_b;
-    STVector3 bc = m_b - m_c;
-    STVector3 normal = STVector3::Cross(ab, bc);
+    STVector3 ba = m_b - m_a;
+    STVector3 ca = m_c - m_a;
+    STVector3 normal = STVector3::Cross(ba, ca);
     normal.Normalize();
 
     return normal;
