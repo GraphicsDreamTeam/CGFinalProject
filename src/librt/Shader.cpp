@@ -66,6 +66,7 @@ RGBR_f Shader::Hit(Intersection *pIntersection, STVector3 *lightDirection, Light
     return RGBR_f(255, 0, 0, 1);
 }
 
+
 // Implements diffuse shading using the lambertian lighting model
 RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
@@ -93,7 +94,7 @@ RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Lig
     assert(lightDirection);
 
     RGBR_f finalColor;
-
+    RGBR_f photonColor = gatherPhotons(pIntersection); //added Nathan
     // Ambient
     // Handled in raytracer
 
@@ -113,11 +114,49 @@ RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Lig
     RGBR_f reflectedColor = RGBR_f::Min(pIntersection->surface->GetColor(), light->GetColor()); // or multiplicative average?
     RGBR_f specularColor = reflectedColor *= specularFactor;
 
+    finalColor += photonColor;      //added Nathan
     finalColor += diffuseColor;
     finalColor += specularColor;
 
     return(finalColor);
 }
+
+/////
+// below is photon mapping code
+/////
+
+RGBR_f gatherPhotons(Intersection *pIntersection){
+  RGBR_f photonColor(0.0,0.0,0.0,255.0);  
+  STVector3 N = pIntersection->normal;                   //Surface Normal at Current Point
+  for (int i = 0; i < numPhotons[type][id]; i++){                    //Photons Which Hit Current Object
+    if (gatedSqDist3(pIntersection,photons[type][id][i][0],sqRadius)){           //Is Photon Close to Point?
+      float weight = max(0.0, -dot3(N, photons[type][id][i][1] ));   //Single Photon Diffuse Lighting
+      weight *= (1.0 - sqrt(gSqDist)) / exposure;                    //Weight by Photon-Point Distance
+      photonColor = add3(photonColor, mul3c(photons[type][id][i][2], weight)); //Add Photon's color to Total
+   }} 
+  return photonColor;
+}
+
+float[] sphereNormal(int idx, float[] P){
+  return normalize3(sub3(P,spheres[idx])); //Surface Normal (Center to Point)
+}
+
+float[] planeNormal(int idx, float[] P, float[] O){
+  int axis = (int) planes[idx][0];
+  float [] N = {0.0,0.0,0.0};
+  N[axis] = O[axis] - planes[idx][1];      //Vector From Surface to Light
+  return normalize3(N);
+}
+
+float[] surfaceNormal(int type, int index, float[] P, float[] Inside){
+  if (type == 0) {return sphereNormal(index,P);}
+  else           {return planeNormal(index,P,Inside);}
+}
+
+
+
+
+
 
 
 Shader::~Shader()
