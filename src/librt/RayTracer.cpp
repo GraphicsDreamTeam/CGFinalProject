@@ -20,7 +20,7 @@
 #include "STVector2.h"
 #include <algorithm>
 #include <vector>
-
+#include <stdlib.h>
 double const RayTracer::c2w[4][4] =
 {
     {0.4, 0.2, -0.8, 0.0},
@@ -224,17 +224,18 @@ void Raytracer::raytrace(Scene *pScene, STVector2* imageSize, std::string fName,
 
 
 void RayTracer::emitPhotons(Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode){
-//  randomSeed(0);                             //Ensure Same Photons Each Time
+//  randomSeed(0);   
+    srand (0);                          //Ensure Same Photons Each Time
   for (int t = 0; t < nrTypes; t++)            //Initialize Photon Count to Zero for Each Object
     for (int i = 0; i < nrObjects[t]; i++)
       numPhotons[t][i] = 0; 
 
   for (int i = 0; i < nrPhotons; i++){ 
     int bounces = 1;
-    Photon photon(RGBR_f rgb(255.0,255.0,255.0,255.0),normalize3( rand3(1.0) ),normalize3( rand3(1.0) ));// continue work from here.  need to save photons somehow
-    RGBR_f rgb(255.0,255.0,255.0,255.0);               //Initial Photon Color is White
-    STVector3 direction = normalize3( rand3(1.0) );    //Randomize Direction of Photon Emission
-    STVector3 origin = Light;                 //Emit From Point Light Source
+    Photon photon(RGBR_f rgb(255.0,255.0,255.0,255.0),normalize3( rand() % 1 - 1 ),normalize3( rand() % 1 - 1 ));// continue work from here.  need to save photons somehow
+   // RGBR_f rgb(255.0,255.0,255.0,255.0);               //Initial Photon Color is White
+   // STVector3 direction = normalize3( rand3(1.0) );    //Randomize Direction of Photon Emission
+    //STVector3 origin = Light;                 //Emit From Point Light Source
     
     //Spread Out Light Source, But Don't Allow Photons Outside Room/Inside Sphere
     while (prevPoint[1] >= Light[1]){ prevPoint = add3(Light, mul3c(normalize3(rand3(1.0)), 0.75));}
