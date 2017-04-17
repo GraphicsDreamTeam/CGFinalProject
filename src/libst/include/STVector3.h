@@ -3,7 +3,7 @@
 #define __STVECTOR3_H__
 
 #include "stForward.h"
-
+#include <iostream>
 #include <math.h>
 
 /**
@@ -85,6 +85,8 @@ struct STVector3
     inline static STVector3 Lerp(const STVector3& left, const STVector3& right, float s);
     inline static STVector3 ComponentMax(const STVector3& left, const STVector3& right);
     inline static STVector3 ComponentMin(const STVector3& left, const STVector3& right);
+
+    friend std::ostream& operator<< (std::ostream& stream, const STVector3& stVector);
 };
 
 inline STVector3 operator*(const STVector3& left, float right);

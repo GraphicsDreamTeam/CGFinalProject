@@ -71,14 +71,6 @@ void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, Rend
     double aspectRatio = ((double) width) / ((double) height);
     double scale = tan(((double) pScene->GetCamera()->GetFov()) / 2.0 * M_PI / 180);
 
-    // STVector3 rayOrigin = pScene->GetCamera()->GetPosition(); // Perspective
-
-	/*STVector3 imagePoint = widthD * pScene->GetCamera()->Right() +
-					heightD * pScene->GetCamera()->Up() +
-					pScene->GetCamera()->Position() + pScene->GetCamera()->LookAt();*/
-
-    STVector3 rayDirection(0, 0, 1); // Orthagonal
-
     int numRaysHit = 0;
     int numRays = 0;
 
@@ -91,8 +83,9 @@ void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, Rend
 				pY * pScene->GetCamera()->Up() +
 				pScene->GetCamera()->Position() + pScene->GetCamera()->LookAt();
 
-			STVector3 rayDirection = rayOrigin - pScene->GetCamera()->Position();
-			rayDirection.Normalize();
+            STVector3 rayDirection = rayOrigin - pScene->GetCamera()->Position(); // Perspective
+            // STVector3 rayDirection = pScene->GetCamera()->LookAt(); // Orthagonal
+            rayDirection.Normalize();
 
             Ray ray = Ray();
             ray.SetOrigin(rayOrigin);
@@ -138,11 +131,12 @@ void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, Rend
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
 
     // end
-    std::cout << "DONE... (Elapsed time: " << duration * 1000 << " ms, hit: " << ((((double) numRaysHit) / ((double) numRays)) * 100) << "% (" << numRaysHit << " / " << numRays << "))" << std::endl;
+    std::cout << "Done..." << std::endl;
+    std::cout << "\tElapsed time: " << duration * 1000 << " ms" << std::endl;
+    std::cout << "\tHit count: " << numRaysHit << " / " << numRays << " (" << ((((double) numRaysHit) / ((double) numRays)) * 100) << "%)" << std::endl;
 
     // save
     pImg->Save(fName);
-    std::cout << "saved file " << fName.c_str() << std::endl;
 }
 
 RGBR_f RayTracer::Shade(Scene *pScene, Intersection *pIntersection)
