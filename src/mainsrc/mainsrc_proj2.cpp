@@ -158,7 +158,6 @@ int main(int argc, char** argv)
     Setup();
 
 
-    
     // run the ray tracer
     pRayTracer->Run(pScene, imageSize, "output.png", renderMode);
 

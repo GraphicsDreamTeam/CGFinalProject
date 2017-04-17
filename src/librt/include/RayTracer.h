@@ -42,8 +42,12 @@ private:
 
     RGBR_f                      Shade                                           (Scene *pScene, Intersection *pIntersection);
 
-    STVector3					multVectMatrix						(STVector3 rayOrigin);
+    STVector3					multVectMatrix						            (STVector3 rayOrigin);
 
+
+    void                        raytrace          (Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode, STVector3 origin, STVector3 direction);
+
+    void                        emitPhotons       (Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode);
 };
 
 

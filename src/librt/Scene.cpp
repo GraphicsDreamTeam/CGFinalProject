@@ -13,7 +13,8 @@
 #include "Surface.h"
 #include "Light.h"
 #include "Sphere.h"
-
+#include <vector>
+#include "Photon.h"
 
 
 Scene::Scene(void) : m_background(RGBR_f(0, 0, 0, 1)) {}
@@ -32,12 +33,17 @@ void Scene::SetBackgroundColor(RGBR_f color)
     m_background = color;
 }
 
+//set Photons
+void Scene::SetPhotons(std::vector<Photon> photons)
+{
+    photonList = photons;
+}
+
 
 RGBR_f Scene::GetBackgroundColor(void)
 {
     return(m_background);
 }
-
 
 void Scene::AddLight(Light lightin)
 {
@@ -63,6 +69,11 @@ SurfaceList* Scene::GetSurfaceList(void) {
 LightList* Scene::GetLightList(void) {
     return &m_lights;
 }
+
+std::vector<Photon>* Scene::GetPhotons(void) {
+    return &photonList;
+}
+
 
 //-----------------------------------------------------
 // clear the scene by removing surfaces

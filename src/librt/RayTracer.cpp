@@ -53,24 +53,23 @@ void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, Rend
     std::cout << "Running... " << std::endl;
 
     // Clock stuff for timing it!
-    std::clock_t start;
-    double duration;
-    start = std::clock();
+    //std::clock_t start;
+    //double duration;
+    //start = std::clock();
     //
     //std::vector photons = new vector;
-    emitPhotons(pScene, imageSize,fName,mode);
+    this->emitPhotons(pScene, imageSize,fName,mode);
     //
     
-    raytrace(pScene, imageSize,fName,mode, NULL,NULL);
+    this->raytrace(pScene, imageSize,fName,mode, NULL,NULL, false);
 
     // End the clock timer and get its duration
-    duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+   // duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
 
     // end
-    std::cout << "DONE... (Elapsed time: " << duration * 1000 << " ms, hit: " << ((((double) numRaysHit) / ((double) numRays)) * 100) << "% (" << numRaysHit << " / " << numRays << "))" << std::endl;
+    //std::cout << "DONE... (Elapsed time: " << duration * 1000 << " ms, hit: "  << std::endl; //<< ((((double) numRaysHit) / ((double) numRays)) * 100) << "% (" << numRaysHit << " / " << numRays << "))"
 
-    // save
-    pImg->Save(fName);
+
     std::cout << "saved file " << fName.c_str() << std::endl;
 }
 
@@ -130,7 +129,7 @@ bool RayTracer::MinimumColor(RGBR_f color)
     return(false);
 }
 
-void Raytracer::raytrace(Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode, STVector3 origin, STVector3 direction){
+void RayTracer::raytrace(Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode, STVector3 origin, STVector3 direction, boolean photon){
 // the color redult from shading
     RGBR_f color;
 
@@ -219,7 +218,9 @@ void Raytracer::raytrace(Scene *pScene, STVector2* imageSize, std::string fName,
         }
     }
 
-
+   // if(!photon){
+        pImg->Save(fName);
+    //}
 }
 
 
@@ -230,18 +231,20 @@ void RayTracer::emitPhotons(Scene *pScene, STVector2* imageSize, std::string fNa
     for (int i = 0; i < nrObjects[t]; i++)
       numPhotons[t][i] = 0; 
 
-  for (int i = 0; i < nrPhotons; i++){ 
+for(int l = 0;l<pScene.GetLightList().size();l++){ // go through the number of lights >>IS THIS A GOOD IDEA?<<
+  for (int i = 0; i < nrPhotons; i++){                  //shoot the number of photons
     int bounces = 1;
-    Photon photon(RGBR_f rgb(255.0,255.0,255.0,255.0),normalize3( rand() % 1 - 1 ),normalize3( rand() % 1 - 1 ));// continue work from here.  need to save photons somehow
+    Photon photon(RGBR_f rgb(255.0,255.0,255.0,255.0),STVector3( rand() % 1 - 1,rand() % 1 - 1,rand() % 1 - 1 )->Normalize(),pScene.GetLightList().get(l).GetPosition());// continue work from here.  need to save photons somehow
+    pScene.GetPhotons().add(photon);
    // RGBR_f rgb(255.0,255.0,255.0,255.0);               //Initial Photon Color is White
    // STVector3 direction = normalize3( rand3(1.0) );    //Randomize Direction of Photon Emission
-    //STVector3 origin = Light;                 //Emit From Point Light Source
+    //STVector3 origin = Light;                 //Emit From Point Light Source // gotta fix this so photons originate at the light source
     
     //Spread Out Light Source, But Don't Allow Photons Outside Room/Inside Sphere
-    while (prevPoint[1] >= Light[1]){ prevPoint = add3(Light, mul3c(normalize3(rand3(1.0)), 0.75));}
+    while (prevPoint[1] >= Light[1]){ prevPoint = add3(Light, STVector3( rand() % 1 - 1,rand() % 1 - 1,rand() % 1 - 1 )->Normalize() * 0.75);}
     if (abs(prevPoint[0]) > 1.5 || abs(prevPoint[1]) > 1.2 ) bounces = nrBounces+1;
     
-    raytrace(pScene,imageSize,fName,mode,origin, direction);                          //Trace the Photon's Path
+    raytrace(pScene,imageSize,fName,mode,photon->origin, photon->direction, true);                          //Trace the Photon's Path
     
     while (gIntersect && bounces <= nrBounces){        //Intersection With New Object
         gPoint = add3( mul3c(ray,gDist), prevPoint);   //3D Point of Intersection
@@ -255,6 +258,7 @@ void RayTracer::emitPhotons(Scene *pScene, STVector2* imageSize, std::string fNa
         bounces++;
     }
   }
+}
 }
 
 
