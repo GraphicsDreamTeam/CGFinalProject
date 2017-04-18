@@ -74,15 +74,17 @@ RGBR_f Shader::Hit(Intersection *pIntersection, STVector3 *lightDirection, Light
 // Implements a simple red colorer if we hit something.
 RGBR_f Shader::Photon(Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene* pScene)
 {
-    assert(pIntersection);
-    assert(lightDirection);
+   // assert(pIntersection);
+   // assert(lightDirection);
 
     RGBR_f color = RGBR_f(0,0,0,255);
 
+        //    std::cout<<"PHOTONS:"<<pScene->GetPhotons()->size()<<"\n";
+
     for(int i=0;i<pScene->GetPhotons()->size();i++){
 
-        if((pScene->GetPhotons()->at(i)->GetIntersection().point - pIntersection->point).LengthSq() <= 0.7){
-            color = RGBR_f(255,0,0,255);
+        if((pScene->GetPhotons()->at(i)->GetIntersection().point - pIntersection->point).LengthSq() <= 0.001){
+            color += RGBR_f(5,0,0,255);
         }
 
     }

@@ -22,7 +22,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <math.h>
-
+#include <time.h> 
 
 
 
@@ -55,7 +55,7 @@ void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, Rend
 {
 
 
-    this->emitPhotons(pScene,4000, 2);
+    this->emitPhotons(pScene,2000, 4);
     //
     
     this->rayTrace(pScene, imageSize,fName,mode);
@@ -159,9 +159,10 @@ bool RayTracer::photonTrace(Scene *pScene, Photon *photon){
                 return false;
             }else{
                 photon->SetIntersection(*closestIntersection);
-                std::cout<<"::Intersection Found:: "<<photon->GetIntersection().point.x<<","<<photon->GetIntersection().point.y<<","<<photon->GetIntersection().point.z<<"\n";
+                //std::cout<<"::Intersection Found:: "<<photon->GetIntersection().point.x<<","<<photon->GetIntersection().point.y<<","<<photon->GetIntersection().point.z<<"\n";
+                result = true;
             }
-
+           // std::cout<<result<<"result of photonTrace \n";
             return result;
 }
 
@@ -276,7 +277,7 @@ void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName,
 void RayTracer::emitPhotons(Scene *pScene, int nrPhotons, int numBounces){
   
 
-    srand (0);                          //Ensure Same Photons Each Time, should make this settable in setup
+    srand (time(NULL));                          //Ensure Same Photons Each Time, should make this settable in setup
 
 
 //  for (int t = 0; t < nrTypes; t++)            //Initialize Photon Count to Zero for Each Object
@@ -289,8 +290,8 @@ for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of
     int bounces = 1;
 
 
-    STVector3 initDirection = STVector3( rand() % 2 - 1, rand() % 2 - 1, rand() % 2 - 1 );
-   // std::cout<<rand() % 3 - 1<<"\n";
+    STVector3 initDirection = STVector3( -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1-(-1)))), -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1-(-1)))), -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1-(-1)))) );
+    //std::cout<<-1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1-(-1))))<<"\n";
 
     initDirection.Normalize();
  
@@ -303,6 +304,9 @@ for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of
     
 
     bool hit = photonTrace(pScene,photon);                          //Trace the Photon's Path
+
+   // std::cout<<hit<<" :boolean value \n";
+
    if (hit == true)
    {
 
@@ -315,7 +319,9 @@ for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of
         hit = photonTrace(pScene,photon);                         //Trace It to Next Location
         photon->currentBounces++;
     }
+        //std::cout<<"found an intersection, lets add it \n";
         pScene->GetPhotons()->push_back(photon);                //once bouncing is done save the photon to the scene
+       // std::cout<<"size:"<<pScene->GetPhotons()->size()<<"\n";
     }
 
   }

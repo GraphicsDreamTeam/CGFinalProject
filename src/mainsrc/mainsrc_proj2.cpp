@@ -57,7 +57,7 @@ void Setup(void)
 {
     // renderMode = HIT;
     // renderMode = LAMBERTIAN;
-    renderMode = PHOTON;
+    renderMode = PHONG;
 
     // We set the image size here because it makes the most sense.
     imageSize = new STVector2(1000, 1000);
@@ -75,16 +75,16 @@ void Setup(void)
 
     pScene->SetBackgroundColor(RGBR_f(0, 0, 0, 1));
 
-    pScene->AddLight(Light(STVector3(4,1,0), RGBR_f(255, 0, 0, 255), 40, "Light1"));
+    pScene->AddLight(Light(STVector3(0,0,2), RGBR_f(255, 0, 0, 255), 40, "Light1"));
     //pScene->AddLight(Light(STVector3(-1, 0, 1.5), RGBR_f(255, 0, 0, 255), 2, "Light1"));
     // pScene->AddLight(Light(STVector3(-10, 0, -5), RGBR_f(0, 0, 255, 255), 40, "Light2"));
 
-    Sphere* sphere1 = new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255));
-    Sphere* sphere2 = new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255));
+   // Sphere* sphere1 = new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255));
+   // Sphere* sphere2 = new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255));
     Triangle* triangle1 = new Triangle(STVector3(0, -3, 0), STVector3(1, -2, 0), STVector3(0, -1, 0), RGBR_f(255, 255, 255, 255));
 
-    pScene->AddSurface(sphere1);
-    pScene->AddSurface(sphere2);
+   // pScene->AddSurface(sphere1);
+   // pScene->AddSurface(sphere2);
     pScene->AddSurface(triangle1);
 
     pRayTracer = new RayTracer();
