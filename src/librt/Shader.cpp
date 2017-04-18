@@ -16,19 +16,13 @@
 
 
 Shader::Shader(void)
-    : m_mode          (LAMBERTIAN)
 {
-}
 
-
-void Shader::SetMode(RenderMode mode)
-{
-    m_mode = mode;
 }
 
 
 // Runs the shader according to the specified render mode
-RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
+/*RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
     RGBR_f color;
 
@@ -47,27 +41,20 @@ RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light
             break;
         }
 
-    // TO DO: Proj2 raytracer
-    //          - Add special effects.
-    // 1. Add calls to your new special effects function to the switch statement
-    // 2. Update the RenderMode structure in def.h to flag these
-    //---------------------------------------------------------
-    //---------------------------------------------------------
-
     return(color);
-}
+}*/
 
 // Implements a simple red colorer if we hit something.
-RGBR_f Shader::Hit(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
+/*RGBR_f Shader::Hit(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
     assert(pIntersection);
     assert(lightDirection);
 
     return RGBR_f(255, 0, 0, 1);
-}
+}*/
 
 // Implements diffuse shading using the lambertian lighting model
-RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
+/*RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
     assert(pIntersection);
     assert(lightDirection);
@@ -83,10 +70,10 @@ RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection
     diffuseColor.a = 255;
 
     return(diffuseColor);
-}
+}*/
 
 // Implements diffuse shading using the lambertian lighting model
-RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
+/*RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
 
     assert(pIntersection);
@@ -117,7 +104,7 @@ RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Lig
     finalColor += specularColor;
 
     return(finalColor);
-}
+}*/
 
 
 Shader::~Shader()

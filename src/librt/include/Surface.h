@@ -13,7 +13,7 @@
 #include "Intersection.h"
 #include "defs.h"
 #include "Lists.h"
-
+#include "Material.h"
 
 
 class Surface
@@ -24,18 +24,18 @@ class Surface
                                     ~Surface                            (void);
 
     virtual bool                    FindIntersection                     (Ray ray, Intersection *pIntersection){ return(false);}
-    int                             FindClosestIntersection             (Intersection *pIntersection);
     RGBR_f                          GetColor                            (void);
     void                            SetColor                            (RGBR_f newColor);
+    Material                        GetMaterial                         (void);
+    void                            SetMaterial                         (Material material_in);
 
 protected:
 
 
 
-    IntersectionList                m_intersections;
-
     STVector3                       m_center;
     RGBR_f                          color;
+    Material                        material;
 
 };
 

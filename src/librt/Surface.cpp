@@ -11,7 +11,6 @@
 #include <string>
 
 
-
 Surface::Surface(void)
 {
 
@@ -32,18 +31,12 @@ void Surface::SetColor(RGBR_f newColor) {
 	color = newColor;
 }
 
-// Returns the closest intersection point
-int Surface::FindClosestIntersection(Intersection *pIntersection)
+Material Surface::GetMaterial (void)
 {
-    // TO DO: Proj2 raytracer
-    //          - Find the closest intersection.
-    // 1. Return the closest intersection in m_intersections
-    //    0 returned for no intersection; otherwise the number
-    //    of close intersections within a small threshold
-    //    and the pIntersection is updated with the closest intersection
-    //------------------------------------------------
-    //------------------------------------------------
-
-    return(0);
+    return material;
 }
 
+void Surface::SetMaterial (Material material_in)
+{
+    material = material_in;
+}
