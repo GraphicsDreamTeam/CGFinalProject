@@ -49,28 +49,12 @@ RayTracer::~RayTracer()
 void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode)
 {
 
-    // begin
-    std::cout << "Running... " << std::endl;
 
-    // Clock stuff for timing it!
-    //std::clock_t start;
-    //double duration;
-    //start = std::clock();
-    //
-    //std::vector photons = new vector;
     this->emitPhotons(pScene, imageSize,fName,mode);
     //
     
-    this->raytrace(pScene, imageSize,fName,mode, NULL,NULL, false);
+    this->rayTrace(pScene, imageSize,fName,mode, NULL,NULL, false);
 
-    // End the clock timer and get its duration
-   // duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
-
-    // end
-    //std::cout << "DONE... (Elapsed time: " << duration * 1000 << " ms, hit: "  << std::endl; //<< ((((double) numRaysHit) / ((double) numRays)) * 100) << "% (" << numRaysHit << " / " << numRays << "))"
-
-
-    std::cout << "saved file " << fName.c_str() << std::endl;
 }
 
 RGBR_f RayTracer::Shade(Scene *pScene, Intersection *pIntersection)
@@ -129,8 +113,84 @@ bool RayTracer::MinimumColor(RGBR_f color)
     return(false);
 }
 
-void RayTracer::raytrace(Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode, STVector3 origin, STVector3 direction, boolean photon){
-// the color redult from shading
+
+//photon tracer function
+void RayTracer::photonTrace(Scene *pScene, STVector2* imageSize, std::string fName, STVector3 origin, STVector3 direction){
+
+
+  /*  // the color result from shading
+    RGBR_f color;
+
+    SurfaceList* surfaceList = pScene->GetSurfaceList();
+
+    int width = imageSize->x;
+    int height = imageSize->y;
+    RGBR_f bkground = pScene->GetBackgroundColor();
+    STImage *pImg = new STImage(width, height, STImage::Pixel(bkground.r*255, bkground.g*255, bkground.b*255, bkground.a*255));
+
+    double aspectRatio = ((double) width) / ((double) height);
+    double scale = tan(((double) pScene->GetCamera()->GetFov()) / 2.0 * M_PI / 180);*/
+
+    STVector3 photonOrigin = origin;                                                                // pass in a origin for the photon to start at
+
+    STVector3 photonDirection = direction;                                                          // pass in a direction for the photon to go in
+
+    int numRaysHit = 0;
+    int numRays = 0;
+
+
+            photonDirection.Normalize();                                                            // normalize the direction bc why not
+
+            Ray ray = Ray();
+            ray.SetOrigin(photonOrigin);
+            ray.SetDirection(photonDirection);
+
+            Intersection* closestIntersection = NULL;
+
+            for (int k = 0; k < surfaceList->size(); k++) {
+                Intersection* returnIntersection = new Intersection();
+                Surface* surface = (*surfaceList)[k];
+
+                bool result = surface->FindIntersection(ray, returnIntersection);
+
+                if (result) {
+                    numRaysHit++;
+                    if (closestIntersection == NULL) {
+                        closestIntersection = returnIntersection;
+                    } else if (returnIntersection->distanceSqu < closestIntersection->distanceSqu) {
+                        delete closestIntersection;
+                        closestIntersection = returnIntersection;
+                    }
+                } else {
+                    delete returnIntersection;
+                }
+
+                numRays++;
+            }
+
+            //do something relevant to the intersection point
+        
+    
+}
+
+
+
+
+
+
+
+
+
+void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode){
+    // begin
+    std::cout << "Running... " << std::endl;
+
+    // Clock stuff for timing it!
+    std::clock_t start;
+    double duration;
+    start = std::clock();
+
+    // the color redult from shading
     RGBR_f color;
 
     // set the shader's render mode
@@ -153,31 +213,20 @@ void RayTracer::raytrace(Scene *pScene, STVector2* imageSize, std::string fName,
                     pScene->GetCamera()->Position() + pScene->GetCamera()->LookAt();*/
 
     STVector3 rayDirection(0, 0, 1); // Orthagonal
-    STVector3 rayOrigin;
+
     int numRaysHit = 0;
     int numRays = 0;
-
-
 
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
             double pX = (2.0 * ((((double) i) + 0.5) / width) - 1.0) * scale * aspectRatio; // Perspective
             double pY = (1.0 - 2.0 * ((((double) j) + 0.5) / height)) * scale; // Perspective
 
-                if(origin == NULL){
-                    rayOrigin = pX * pScene->GetCamera()->Right() +
-                    pY * pScene->GetCamera()->Up() +
-                    pScene->GetCamera()->Position() + pScene->GetCamera()->LookAt();
-                }else{
-                    rayOrigin =origin;
-                }
+            STVector3 rayOrigin = pX * pScene->GetCamera()->Right() +
+                pY * pScene->GetCamera()->Up() +
+                pScene->GetCamera()->Position() + pScene->GetCamera()->LookAt();
 
-                if(direction == NULL){
-                    STVector3 newDirection =rayOrigin - pScene->GetCamera()->Position();
-                 }else{
-                    rayDirection =direction;
-                }
-            //STVector3 rayDirection = rayOrigin - pScene->GetCamera()->Position();
+            STVector3 rayDirection = rayOrigin - pScene->GetCamera()->Position();
             rayDirection.Normalize();
 
             Ray ray = Ray();
@@ -218,9 +267,17 @@ void RayTracer::raytrace(Scene *pScene, STVector2* imageSize, std::string fName,
         }
     }
 
-   // if(!photon){
-        pImg->Save(fName);
-    //}
+    Camera* sceneCamera = pScene->GetCamera();
+
+    // End the clock timer and get its duration
+    duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+
+    // end
+    std::cout << "DONE... (Elapsed time: " << duration * 1000 << " ms, hit: " << ((((double) numRaysHit) / ((double) numRays)) * 100) << "% (" << numRaysHit << " / " << numRays << "))" << std::endl;
+
+    // save
+    pImg->Save(fName);
+    std::cout << "saved file " << fName.c_str() << std::endl;
 }
 
 
@@ -244,7 +301,7 @@ for(int l = 0;l<pScene.GetLightList().size();l++){ // go through the number of l
     while (prevPoint[1] >= Light[1]){ prevPoint = add3(Light, STVector3( rand() % 1 - 1,rand() % 1 - 1,rand() % 1 - 1 )->Normalize() * 0.75);}
     if (abs(prevPoint[0]) > 1.5 || abs(prevPoint[1]) > 1.2 ) bounces = nrBounces+1;
     
-    raytrace(pScene,imageSize,fName,mode,photon->origin, photon->direction, true);                          //Trace the Photon's Path
+    photonTrace(pScene,imageSize,fName,mode,photon->origin, photon->direction);                          //Trace the Photon's Path
     
     while (gIntersect && bounces <= nrBounces){        //Intersection With New Object
         gPoint = add3( mul3c(ray,gDist), prevPoint);   //3D Point of Intersection

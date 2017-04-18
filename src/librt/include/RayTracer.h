@@ -45,7 +45,8 @@ private:
     STVector3					multVectMatrix						            (STVector3 rayOrigin);
 
 
-    void                        raytrace          (Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode, STVector3 origin, STVector3 direction);
+    void                        rayTrace          (Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode);
+    void                        photonTrace       (Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode);
 
     void                        emitPhotons       (Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode);
 };
