@@ -4,10 +4,10 @@
 
 
 
-Photon::Photon(void)
-    :   rgb         		(255.0,255.0,255.0,255.0),
-        direction           (NULL),
-        origin              (NULL),
+Photon::Photon(RGBR_f initColor,STVector3 initDirection,STVector3 initOrigin)
+    :   rgb         		initColor,
+        direction           initDirection,
+        origin              initOrigin,
 {
 
 }

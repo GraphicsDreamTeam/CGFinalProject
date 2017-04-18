@@ -13,7 +13,7 @@ class Photon {
 
 public:
 
-                    Photon                       (void);
+                    Photon                       (RGBR_f initColor,STVector3 initDirection,STVector3 initOrigin);
                     ~Photon                      (void);
     RGBR_f 			rgb;
     STVector3       origin;

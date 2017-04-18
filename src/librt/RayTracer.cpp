@@ -50,10 +50,10 @@ void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, Rend
 {
 
 
-    this->emitPhotons(pScene, imageSize,fName,mode);
+    this->emitPhotons(pScene,2000);
     //
     
-    this->rayTrace(pScene, imageSize,fName,mode, NULL,NULL, false);
+    this->rayTrace(pScene, imageSize,fName,mode);
 
 }
 
@@ -115,7 +115,7 @@ bool RayTracer::MinimumColor(RGBR_f color)
 
 
 //photon tracer function
-void RayTracer::photonTrace(Scene *pScene, STVector2* imageSize, std::string fName, STVector3 origin, STVector3 direction){
+void RayTracer::photonTrace(Scene *pScene, STVector3* origin, STVector3* direction){
 
 
   /*  // the color result from shading
@@ -131,25 +131,25 @@ void RayTracer::photonTrace(Scene *pScene, STVector2* imageSize, std::string fNa
     double aspectRatio = ((double) width) / ((double) height);
     double scale = tan(((double) pScene->GetCamera()->GetFov()) / 2.0 * M_PI / 180);*/
 
-    STVector3 photonOrigin = origin;                                                                // pass in a origin for the photon to start at
+    //STVector3 photonOrigin = origin;                                                                // pass in a origin for the photon to start at
 
-    STVector3 photonDirection = direction;                                                          // pass in a direction for the photon to go in
+   // STVector3 photonDirection = direction;                                                          // pass in a direction for the photon to go in
 
    // int numRaysHit = 0;
    // int numRays = 0;
 
 
-            photonDirection.Normalize();                                                            // normalize the direction bc why not
+            direction->Normalize();                                                            // normalize the direction bc why not
 
             Ray ray = Ray();
-            ray.SetOrigin(photonOrigin);
-            ray.SetDirection(photonDirection);
+            ray.SetOrigin(*origin);
+            ray.SetDirection(*direction);
 
             Intersection* closestIntersection = NULL;
 
-            for (int k = 0; k < surfaceList->size(); k++) {
+            for (int k = 0; k < pScene->GetSurfaceList()->size(); k++) {
                 Intersection* returnIntersection = new Intersection();
-                Surface* surface = (*surfaceList)[k];
+                Surface* surface = pScene->GetSurfaceList()->at(k);
 
                 bool result = surface->FindIntersection(ray, returnIntersection);
 
@@ -281,24 +281,28 @@ void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName,
 }
 
 
-void RayTracer::emitPhotons(Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode){
+void RayTracer::emitPhotons(Scene *pScene, int nrPhotons){
 //  randomSeed(0);   
     srand (0);                          //Ensure Same Photons Each Time
-  for (int t = 0; t < nrTypes; t++)            //Initialize Photon Count to Zero for Each Object
-    for (int i = 0; i < nrObjects[t]; i++)
-      numPhotons[t][i] = 0; 
+//  for (int t = 0; t < nrTypes; t++)            //Initialize Photon Count to Zero for Each Object
+//    for (int i = 0; i < nrObjects[t]; i++)
+//      numPhotons[t][i] = 0; 
 
-for(int l = 0;l<pScene.GetLightList().size();l++){ // go through the number of lights >>IS THIS A GOOD IDEA?<<
+for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of lights >>IS THIS A GOOD IDEA?<<
   for (int i = 0; i < nrPhotons; i++){                  //shoot the number of photons
     int bounces = 1;
-    Photon photon(RGBR_f rgb(255.0,255.0,255.0,255.0),STVector3( rand() % 1 - 1,rand() % 1 - 1,rand() % 1 - 1 )->Normalize(),pScene.GetLightList().get(l).GetPosition());// continue work from here.  need to save photons somehow
-    pScene.GetPhotons().add(photon);
+
+    STVector3 initDirection = STVector3( rand() % 1 - 1, rand() % 1 - 1, rand() % 1 - 1 );
+    initDirection.Normalize();
+
+    Photon photon = Photon(RGBR_f(255.0,255.0,255.0,255.0),initDirection, pScene->GetLightList()->at(l).GetPosition());// continue work from here.  need to save photons somehow
+    pScene->GetPhotons()->push_back(photon);
     
     //Spread Out Light Source, But Don't Allow Photons Outside Room/Inside Sphere
-    while (prevPoint[1] >= Light[1]){ prevPoint = add3(Light, STVector3( rand() % 1 - 1,rand() % 1 - 1,rand() % 1 - 1 )->Normalize() * 0.75);}
+    while (prevPoint[1] >= Light[1]){ prevPoint = add3(Light, STVector3( rand() % 1 - 1,rand() % 1 - 1,rand() % 1 - 1 ).Normalize() * 0.75);}
     if (abs(prevPoint[0]) > 1.5 || abs(prevPoint[1]) > 1.2 ) bounces = nrBounces+1;
     
-    photonTrace(pScene,imageSize,fName,mode,photon->origin, photon->direction);                          //Trace the Photon's Path
+    photonTrace(pScene,photon->origin, photon->direction);                          //Trace the Photon's Path
     
     while (gIntersect && bounces <= nrBounces){        //Intersection With New Object
         gPoint = add3( mul3c(ray,gDist), prevPoint);   //3D Point of Intersection
