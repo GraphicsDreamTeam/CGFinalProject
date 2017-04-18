@@ -135,8 +135,8 @@ void RayTracer::photonTrace(Scene *pScene, STVector2* imageSize, std::string fNa
 
     STVector3 photonDirection = direction;                                                          // pass in a direction for the photon to go in
 
-    int numRaysHit = 0;
-    int numRays = 0;
+   // int numRaysHit = 0;
+   // int numRays = 0;
 
 
             photonDirection.Normalize();                                                            // normalize the direction bc why not
@@ -154,7 +154,7 @@ void RayTracer::photonTrace(Scene *pScene, STVector2* imageSize, std::string fNa
                 bool result = surface->FindIntersection(ray, returnIntersection);
 
                 if (result) {
-                    numRaysHit++;
+                    //numRaysHit++;
                     if (closestIntersection == NULL) {
                         closestIntersection = returnIntersection;
                     } else if (returnIntersection->distanceSqu < closestIntersection->distanceSqu) {
@@ -165,7 +165,7 @@ void RayTracer::photonTrace(Scene *pScene, STVector2* imageSize, std::string fNa
                     delete returnIntersection;
                 }
 
-                numRays++;
+                //numRays++;
             }
 
             //do something relevant to the intersection point
@@ -293,9 +293,6 @@ for(int l = 0;l<pScene.GetLightList().size();l++){ // go through the number of l
     int bounces = 1;
     Photon photon(RGBR_f rgb(255.0,255.0,255.0,255.0),STVector3( rand() % 1 - 1,rand() % 1 - 1,rand() % 1 - 1 )->Normalize(),pScene.GetLightList().get(l).GetPosition());// continue work from here.  need to save photons somehow
     pScene.GetPhotons().add(photon);
-   // RGBR_f rgb(255.0,255.0,255.0,255.0);               //Initial Photon Color is White
-   // STVector3 direction = normalize3( rand3(1.0) );    //Randomize Direction of Photon Emission
-    //STVector3 origin = Light;                 //Emit From Point Light Source // gotta fix this so photons originate at the light source
     
     //Spread Out Light Source, But Don't Allow Photons Outside Room/Inside Sphere
     while (prevPoint[1] >= Light[1]){ prevPoint = add3(Light, STVector3( rand() % 1 - 1,rand() % 1 - 1,rand() % 1 - 1 )->Normalize() * 0.75);}
