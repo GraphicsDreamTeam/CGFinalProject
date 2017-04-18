@@ -65,7 +65,9 @@ STVector3 Photon::GetOrigin(void)
 //set the photon's last intersection
 void Photon::SetIntersection(Intersection intersection)
 {
+	            std::cout<<"before set intersection \n";
     lastIntersection = intersection;
+                std::cout<<"after set intersection \n";
 }
 
 
