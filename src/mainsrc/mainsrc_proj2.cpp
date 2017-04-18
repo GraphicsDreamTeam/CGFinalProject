@@ -57,7 +57,7 @@ void Setup(void)
 {
     // renderMode = HIT;
     // renderMode = LAMBERTIAN;
-    renderMode = PHONG;
+    renderMode = PHOTON;
 
     // We set the image size here because it makes the most sense.
     imageSize = new STVector2(1000, 1000);
@@ -75,8 +75,8 @@ void Setup(void)
 
     pScene->SetBackgroundColor(RGBR_f(0, 0, 0, 1));
 
-    pScene->AddLight(Light(STVector3(10, 0, -5), RGBR_f(255, 0, 0, 255), 40, "Light1"));
-    pScene->AddLight(Light(STVector3(-1, 0, 1.5), RGBR_f(255, 0, 0, 255), 2, "Light1"));
+    pScene->AddLight(Light(STVector3(4,1,0), RGBR_f(255, 0, 0, 255), 40, "Light1"));
+    //pScene->AddLight(Light(STVector3(-1, 0, 1.5), RGBR_f(255, 0, 0, 255), 2, "Light1"));
     // pScene->AddLight(Light(STVector3(-10, 0, -5), RGBR_f(0, 0, 255, 255), 40, "Light2"));
 
     Sphere* sphere1 = new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255));

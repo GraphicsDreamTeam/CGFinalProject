@@ -55,7 +55,7 @@ void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, Rend
 {
 
 
-    this->emitPhotons(pScene,2000, 4);
+    this->emitPhotons(pScene,4000, 2);
     //
     
     this->rayTrace(pScene, imageSize,fName,mode);
@@ -92,7 +92,7 @@ RGBR_f RayTracer::Shade(Scene *pScene, Intersection *pIntersection)
             }
         }
 
-        color += pShader->Run(pIntersection, &shadowDirection, &light);
+        color += pShader->Run(pIntersection, &shadowDirection, &light, pScene);
 
         LightLoop:
         continue;
@@ -155,9 +155,11 @@ bool RayTracer::photonTrace(Scene *pScene, Photon *photon){
             }
 
             if (closestIntersection == NULL) {
+                //std::cout<<"::no intersection found:: \n";
                 return false;
             }else{
                 photon->SetIntersection(*closestIntersection);
+                std::cout<<"::Intersection Found:: "<<photon->GetIntersection().point.x<<","<<photon->GetIntersection().point.y<<","<<photon->GetIntersection().point.z<<"\n";
             }
 
             return result;
@@ -287,7 +289,8 @@ for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of
     int bounces = 1;
 
 
-    STVector3 initDirection = STVector3( rand() % 1 - 1, rand() % 1 - 1, rand() % 1 - 1 );
+    STVector3 initDirection = STVector3( rand() % 2 - 1, rand() % 2 - 1, rand() % 2 - 1 );
+   // std::cout<<rand() % 3 - 1<<"\n";
 
     initDirection.Normalize();
  
@@ -300,7 +303,9 @@ for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of
     
 
     bool hit = photonTrace(pScene,photon);                          //Trace the Photon's Path
-   
+   if (hit == true)
+   {
+
     while (hit && photon->GetCurrentBounces() <= photon->GetMaxBounces()){        //Intersection With New Object
         //rgb = mul3c (getColor(rgb,gType,gIndex), 1.0/sqrt(bounces));
         photon->GetColor() = photon->GetIntersection().surface->GetColor() * (1.0/sqrt(photon->GetCurrentBounces()));
@@ -310,7 +315,9 @@ for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of
         hit = photonTrace(pScene,photon);                         //Trace It to Next Location
         photon->currentBounces++;
     }
-    pScene->GetPhotons()->push_back(photon);                //once bouncing is done save the photon to the scene
+        pScene->GetPhotons()->push_back(photon);                //once bouncing is done save the photon to the scene
+    }
+
   }
 }
 }
