@@ -19,6 +19,7 @@
 #include "Sphere.h"
 #include "STVector2.h"
 #include <algorithm>
+#include "Triangle.h"
 
 double const RayTracer::c2w[4][4] =
 {
@@ -164,6 +165,13 @@ RGBR_f RayTracer::Shade(Scene *pScene, Intersection *pIntersection)
             if (surface != pIntersection->surface) {
 
                 if (surface->FindIntersection(ray, &intersection)) {
+
+                            // std::cout << "Cancer" << std::endl;
+
+                        // if (Triangle * p = dynamic_cast<Triangle *>(returnIntersection->surface)) {
+                            // std::cout << "ITS A SPHERE HOLY SHIT" << std::endl;
+                        // }
+
                     goto LightLoop;
                 }
             }

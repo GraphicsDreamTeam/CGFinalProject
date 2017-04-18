@@ -106,8 +106,8 @@ bool Triangle::FindIntersection (Ray ray, Intersection *pIntersection)
     float v = areaPCA / areaABC; // beta
     float w = 1.0f - u - v; // gamma
 
-    double maxValue = std::max<double>(u, std::max<double>(v, w));
-    double minValue = std::min<double>(u, std::min<double>(v, w));
+    float maxValue = std::max<float>(u, std::max<float>(v, w));
+    float minValue = std::min<float>(u, std::min<float>(v, w));
 
     if (maxValue > 1 || minValue < 0) // Point lies outside the triangle
     {
@@ -121,7 +121,6 @@ bool Triangle::FindIntersection (Ray ray, Intersection *pIntersection)
     pIntersection->cameraLookingDirection = ray.Direction();
 
     return true;
-
 }
 
 //-------------------------------------------------

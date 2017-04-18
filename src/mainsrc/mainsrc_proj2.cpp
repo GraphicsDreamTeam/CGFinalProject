@@ -57,61 +57,29 @@ void Setup(void);
 void Setup(void)
 {
     // renderMode = HIT;
-    renderMode = LAMBERTIAN;
-    // renderMode = PHONG;
+    // renderMode = LAMBERTIAN;
+    renderMode = PHONG;
 
     // We set the image size here because it makes the most sense.
     imageSize = new STVector2(1000, 1000);
 
     pScene = new Scene();
+    pRayTracer = new RayTracer();
 
     STVector3 cameraPosition(4, 1, 0);
-    // STVector3 cameraPosition(3, 0, 3);
-    // STVector3 cameraPosition(10, 0, 10);
-    // STVector3 cameraPosition(0, 0, 3);
-    // STVector3 cameraPosition(0, 0, -3);
     STVector3 cameraLookAt = STVector3::Zero - cameraPosition;
     cameraLookAt.Normalize();
-
-    std::cout << cameraLookAt << std::endl;
 
     Camera* camera = new Camera(cameraLookAt, cameraPosition, STVector3(1.0f, 0.0f, 0.0f));
     camera->SetFov(100);
 
     pScene->SetCamera(camera);
-
     pScene->SetBackgroundColor(RGBR_f(0, 0, 0, 1)); // Does nothing right now
-
-    // pScene->AddLight(Light(STVector3(10, 0, -5), RGBR_f(255, 0, 0, 255), 40, "Light1"));
-    // pScene->AddLight(Light(STVector3(-1, 0, 1.5), RGBR_f(255, 0, 0, 255), 2, "Light1"));
-    // pScene->AddLight(Light(STVector3(-10, 0, -5), RGBR_f(0, 0, 255, 255), 40, "Light2"));
-    pScene->AddLight(Light(STVector3(4.9, 0, 0), RGBR_f(255, 255, 255, 255), 60, "Light1"));
-
-    // STVector3 pos(-1, -1, -1);
-    STVector3 pos(-5, -5, -5);
-    // STVector3 pos(-0.5, -0.5, -0.5);
-    // STVector3 pos(-0.5, 0, -0.5);
-    // STVector3 pos(-0.5, 0, 0.5);
-    // STVector3 pos(0, 0, 0);
-    // STVector3 pos(0.5, 0.5, 0.5);
-    // STVector3 pos(1, 1, 1);
-    // STVector3 pos(2, 3, -4);
-
-    Surface* sphere1 = new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 0, 0, 255));
-    Surface* sphere2 = new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 0, 0, 255));
-    // Surface* triangle1 = new Triangle(STVector3(0, 0, 0) + pos, STVector3(0, 1, 0) + pos, STVector3(1, 1, 0) + pos, RGBR_f(255, 255, 255, 255));
-    // Surface* squareMesh = new Mesh("../../data/meshes/cube.obj", pos, RGBR_f(255, 255, 255, 255));
-    // Surface* squareMesh = new Mesh("../../data/meshes/bigcube.obj", pos, RGBR_f(255, 255, 255, 255));
-    Surface* squareMesh = new Mesh("../../data/meshes/bigcubeinverted.obj", pos, RGBR_f(200, 50, 200, 255));
-    // Surface* squareMesh = new Mesh("../../data/meshes/triangle.obj", pos, RGBR_f(255, 255, 255, 255));
-    // Surface* squareMesh = new Mesh("../../data/meshes/cylinder.obj", pos, RGBR_f(255, 255, 255, 255));
-
-    // pScene->AddSurface(sphere1);
-    // pScene->AddSurface(sphere2);
-    // pScene->AddSurface(triangle1);
-    pScene->AddSurface(squareMesh);
-
-    pRayTracer = new RayTracer();
+    pScene->AddLight(Light(STVector3(0, 0, 0), RGBR_f(0, 0, 255, 255), 10, "Light1"));
+    pScene->AddLight(Light(STVector3(0, 0, 0), RGBR_f(255, 0, 0, 255), 10, "Light1"));
+    pScene->AddSurface(new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255)));
+    pScene->AddSurface(new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255)));
+    pScene->AddSurface(new Mesh("../../data/meshes/bigcubeinverted.obj", STVector3(-5, -5, -5), RGBR_f(255, 255, 255, 255)));
 }
 
 
