@@ -94,7 +94,7 @@ RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Lig
     assert(lightDirection);
 
     RGBR_f finalColor;
-    RGBR_f photonColor = gatherPhotons(pIntersection); //added Nathan
+    //RGBR_f photonColor = gatherPhotons(pIntersection); //merge in the photon color how?
     // Ambient
     // Handled in raytracer
 
@@ -114,7 +114,7 @@ RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Lig
     RGBR_f reflectedColor = RGBR_f::Min(pIntersection->surface->GetColor(), light->GetColor()); // or multiplicative average?
     RGBR_f specularColor = reflectedColor *= specularFactor;
 
-    finalColor += photonColor;      //added Nathan
+    //finalColor += photonColor;      //added Nathan
     finalColor += diffuseColor;
     finalColor += specularColor;
 
@@ -125,7 +125,7 @@ RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Lig
 // below is photon mapping code
 /////
 
-RGBR_f gatherPhotons(Intersection *pIntersection){
+/*RGBR_f gatherPhotons(Intersection *pIntersection){
   RGBR_f photonColor(0.0,0.0,0.0,255.0);  
   STVector3 N = pIntersection->normal;                   //Surface Normal at Current Point
   for (int i = 0; i < numPhotons[type][id]; i++){                    //Photons Which Hit Current Object
@@ -135,23 +135,8 @@ RGBR_f gatherPhotons(Intersection *pIntersection){
       photonColor = add3(photonColor, mul3c(photons[type][id][i][2], weight)); //Add Photon's color to Total
    }} 
   return photonColor;
-}
+}*/
 
-float[] sphereNormal(int idx, float[] P){
-  return normalize3(sub3(P,spheres[idx])); //Surface Normal (Center to Point)
-}
-
-float[] planeNormal(int idx, float[] P, float[] O){
-  int axis = (int) planes[idx][0];
-  float [] N = {0.0,0.0,0.0};
-  N[axis] = O[axis] - planes[idx][1];      //Vector From Surface to Light
-  return normalize3(N);
-}
-
-float[] surfaceNormal(int type, int index, float[] P, float[] Inside){
-  if (type == 0) {return sphereNormal(index,P);}
-  else           {return planeNormal(index,P,Inside);}
-}
 
 
 

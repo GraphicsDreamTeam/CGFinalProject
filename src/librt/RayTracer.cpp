@@ -21,6 +21,11 @@
 #include <algorithm>
 #include <vector>
 #include <stdlib.h>
+#include <math.h>
+
+
+
+
 double const RayTracer::c2w[4][4] =
 {
     {0.4, 0.2, -0.8, 0.0},
@@ -50,7 +55,7 @@ void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, Rend
 {
 
 
-    this->emitPhotons(pScene,2000);
+    this->emitPhotons(pScene,2000, 4);
     //
     
     this->rayTrace(pScene, imageSize,fName,mode);
@@ -115,7 +120,7 @@ bool RayTracer::MinimumColor(RGBR_f color)
 
 
 //photon tracer function
-void RayTracer::photonTrace(Scene *pScene, STVector3* origin, STVector3* direction){
+bool RayTracer::photonTrace(Scene *pScene, Photon *photon){
 
 
   /*  // the color result from shading
@@ -137,13 +142,13 @@ void RayTracer::photonTrace(Scene *pScene, STVector3* origin, STVector3* directi
 
    // int numRaysHit = 0;
    // int numRays = 0;
+            bool result;
 
-
-            direction->Normalize();                                                            // normalize the direction bc why not
+            photon->GetDirection().Normalize();                                                            // normalize the direction bc why not
 
             Ray ray = Ray();
-            ray.SetOrigin(*origin);
-            ray.SetDirection(*direction);
+            ray.SetOrigin(photon->GetOrigin());
+            ray.SetDirection(photon->GetDirection());
 
             Intersection* closestIntersection = NULL;
 
@@ -151,7 +156,7 @@ void RayTracer::photonTrace(Scene *pScene, STVector3* origin, STVector3* directi
                 Intersection* returnIntersection = new Intersection();
                 Surface* surface = pScene->GetSurfaceList()->at(k);
 
-                bool result = surface->FindIntersection(ray, returnIntersection);
+                result = surface->FindIntersection(ray, returnIntersection);
 
                 if (result) {
                     //numRaysHit++;
@@ -169,8 +174,8 @@ void RayTracer::photonTrace(Scene *pScene, STVector3* origin, STVector3* directi
             }
 
             //do something relevant to the intersection point
-        
-    
+            photon->SetIntersection(*closestIntersection);
+            return result;
 }
 
 
@@ -281,7 +286,7 @@ void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName,
 }
 
 
-void RayTracer::emitPhotons(Scene *pScene, int nrPhotons){
+void RayTracer::emitPhotons(Scene *pScene, int nrPhotons, int numBounces){
 //  randomSeed(0);   
     srand (0);                          //Ensure Same Photons Each Time
 //  for (int t = 0; t < nrTypes; t++)            //Initialize Photon Count to Zero for Each Object
@@ -295,26 +300,24 @@ for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of
     STVector3 initDirection = STVector3( rand() % 1 - 1, rand() % 1 - 1, rand() % 1 - 1 );
     initDirection.Normalize();
 
-    Photon photon = Photon(RGBR_f(255.0,255.0,255.0,255.0),initDirection, pScene->GetLightList()->at(l).GetPosition());// continue work from here.  need to save photons somehow
-    pScene->GetPhotons()->push_back(photon);
+    Photon *photon = new Photon(pScene->GetLightList()->at(l).GetColor(),initDirection, pScene->GetLightList()->at(l).GetPosition(),numBounces);// continue work from here.  need to save photons somehow
     
     //Spread Out Light Source, But Don't Allow Photons Outside Room/Inside Sphere
-    while (prevPoint[1] >= Light[1]){ prevPoint = add3(Light, STVector3( rand() % 1 - 1,rand() % 1 - 1,rand() % 1 - 1 ).Normalize() * 0.75);}
-    if (abs(prevPoint[0]) > 1.5 || abs(prevPoint[1]) > 1.2 ) bounces = nrBounces+1;
+  //  while (prevPoint[1] >= Light[1]){ prevPoint = add3(Light, STVector3( rand() % 1 - 1,rand() % 1 - 1,rand() % 1 - 1 ).Normalize() * 0.75);}
+   // if (abs(prevPoint[0]) > 1.5 || abs(prevPoint[1]) > 1.2 ) bounces = nrBounces+1;
     
-    photonTrace(pScene,photon->origin, photon->direction);                          //Trace the Photon's Path
+    bool hit = photonTrace(pScene,photon);                          //Trace the Photon's Path
     
-    while (gIntersect && bounces <= nrBounces){        //Intersection With New Object
-        gPoint = add3( mul3c(ray,gDist), prevPoint);   //3D Point of Intersection
-        rgb = mul3c (getColor(rgb,gType,gIndex), 1.0/sqrt(bounces));
-        storePhoton(gType, gIndex, gPoint, ray, rgb);  //Store Photon Info 
-        drawPhoton(rgb, gPoint);                       //Draw Photon
-        shadowPhoton(ray);                             //Shadow Photon
-        ray = reflect(ray,prevPoint);                  //Bounce the Photon
-        raytrace(ray, gPoint);                         //Trace It to Next Location
-        prevPoint = gPoint;
-        bounces++;
+    while (hit && photon->GetCurrentBounces() <= photon->GetMaxBounces()){        //Intersection With New Object
+        //rgb = mul3c (getColor(rgb,gType,gIndex), 1.0/sqrt(bounces));
+        photon->GetColor() = photon->GetIntersection().surface->GetColor() * (1.0/sqrt(photon->GetCurrentBounces()));
+        //shadowPhoton(ray);                             //Shadow Photon
+        //reflect(ray,prevPoint);                  //Bounce the Photon
+        photon->Reflect();
+        hit = photonTrace(pScene,photon);                         //Trace It to Next Location
+        photon->currentBounces++;
     }
+    pScene->GetPhotons()->push_back(photon);                //once bouncing is done save the photon to the scene
   }
 }
 }

@@ -46,9 +46,9 @@ private:
 
 
     void                        rayTrace          (Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode);
-    void                        photonTrace       (Scene *pScene, STVector3* origin, STVector3* direction);
+    bool                        photonTrace       (Scene *pScene, Photon *photon);
 
-    void                        emitPhotons       (Scene *pScene, int nrPhotons);
+    void                        emitPhotons       (Scene *pScene, int nrPhotons, int numBounces);
 };
 
 

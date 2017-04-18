@@ -13,7 +13,7 @@ class Photon {
 
 public:
 
-                    Photon                       (RGBR_f initColor,STVector3 initDirection,STVector3 initOrigin);
+                    Photon                       (RGBR_f initColor,STVector3 initDirection,STVector3 initOrigin, int);
                     ~Photon                      (void);
 
 
@@ -33,9 +33,21 @@ void 				SetIntersection				 (Intersection intersection);
 
 Intersection 		GetIntersection				 (void);
 
+void 				SetDistSquared				 (float dist);
 
+float		 		GetDistSquared			 	 (void);
 
+void 				SetMaxBounces				 (int num);
 
+int 			 	GetMaxBounces			 	 (void);
+
+void 				SetCurrentBounces			 (int num);
+
+int 			 	GetCurrentBounces			 (void);
+
+void 				updateTrajectory			 (STVector3 direction, STVector3 origin);
+
+void 				Reflect			 			 (void);
 
 
 
@@ -43,6 +55,9 @@ Intersection 		GetIntersection				 (void);
     STVector3       origin;
     STVector3       direction;
     Intersection    lastIntersection;
+    float			distSquared;
+    int 			maxBounces;
+    int    			currentBounces;
 };
 
 

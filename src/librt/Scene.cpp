@@ -34,7 +34,7 @@ void Scene::SetBackgroundColor(RGBR_f color)
 }
 
 //set Photons
-void Scene::SetPhotons(std::vector<Photon> photons)
+void Scene::SetPhotons(std::vector<Photon*> photons)
 {
     photonList = photons;
 }
@@ -70,7 +70,7 @@ LightList* Scene::GetLightList(void) {
     return &m_lights;
 }
 
-std::vector<Photon>* Scene::GetPhotons(void) {
+std::vector<Photon*>* Scene::GetPhotons(void) {
     return &photonList;
 }
 
