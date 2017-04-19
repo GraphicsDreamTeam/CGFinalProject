@@ -19,7 +19,8 @@
 typedef enum {
     HIT				= 1,
     LAMBERTIAN      = 2,
-    PHONG           = 3
+    PHONG           = 3,
+    PHOTON			= 4
 }RenderMode;
 
 
