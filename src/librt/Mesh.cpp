@@ -83,7 +83,7 @@ void Mesh::readFile(const std::string& fileName)
 {
     std::vector<STVector3> mVertices;
 
-    std::cout << "Mesh:" << std::endl;
+    // std::cout << "Mesh:" << std::endl;
 
     std::string ext = STGetExtension(fileName);
     if (!ext.compare("OBJ"))
@@ -120,10 +120,10 @@ void Mesh::readFile(const std::string& fileName)
                 in >> p2; in.ignore(100, ' ');
                 in >> p3;
 
-                std::cout << "\tTriangle #" << (triangles.size() + 1) << ": " << std::endl;
-                std::cout << "\t\tVertex 1: " << mVertices[p1 - 1] << std::endl;
-                std::cout << "\t\tVertex 2: " << mVertices[p2 - 1] << std::endl;
-                std::cout << "\t\tVertex 3: " << mVertices[p3 - 1] << std::endl;
+                // std::cout << "\tTriangle #" << (triangles.size() + 1) << ": " << std::endl;
+                // std::cout << "\t\tVertex 1: " << mVertices[p1 - 1] << std::endl;
+                // std::cout << "\t\tVertex 2: " << mVertices[p2 - 1] << std::endl;
+                // std::cout << "\t\tVertex 3: " << mVertices[p3 - 1] << std::endl;
 
                 triangles.push_back(new Triangle(mVertices[p1 - 1], mVertices[p2 - 1], mVertices[p3 - 1], GetColor(), GetMaterial()));
             }
