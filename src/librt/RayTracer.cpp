@@ -19,6 +19,7 @@
 #include "Sphere.h"
 #include "STVector2.h"
 #include <algorithm>
+#include "Triangle.h"
 #include <vector>
 #include <stdlib.h>
 #include <math.h>
@@ -206,7 +207,8 @@ void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName)
                 pY * pScene->GetCamera()->Up() +
                 pScene->GetCamera()->Position() + pScene->GetCamera()->LookAt();
 
-            STVector3 rayDirection = rayOrigin - pScene->GetCamera()->Position();
+            STVector3 rayDirection = rayOrigin - pScene->GetCamera()->Position(); // Perspective
+            // STVector3 rayDirection = pScene->GetCamera()->LookAt(); // Orthagonal
             rayDirection.Normalize();
 
             Ray ray = Ray();
@@ -253,11 +255,12 @@ void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName)
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
 
     // end
-    std::cout << "DONE... (Elapsed time: " << duration * 1000 << " ms, hit: " << ((((double) numRaysHit) / ((double) numRays)) * 100) << "% (" << numRaysHit << " / " << numRays << "))" << std::endl;
+    std::cout << "Done..." << std::endl;
+    std::cout << "\tElapsed time: " << duration * 1000 << " ms" << std::endl;
+    std::cout << "\tHit count: " << numRaysHit << " / " << numRays << " (" << ((((double) numRaysHit) / ((double) numRays)) * 100) << "%)" << std::endl;
 
     // save
     pImg->Save(fName);
-    std::cout << "saved file " << fName.c_str() << std::endl;
 }
 
 
@@ -272,6 +275,7 @@ void RayTracer::emitPhotons(Scene *pScene, int nrPhotons, int numBounces){
 //      numPhotons[t][i] = 0;
 
 for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of lights >>IS THIS A GOOD IDEA?<<
+
 
   for (int i = 0; i < nrPhotons; i++){                  //shoot the number of photons
     int bounces = 1;

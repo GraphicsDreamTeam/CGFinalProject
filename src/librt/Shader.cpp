@@ -39,7 +39,8 @@
     assert(pIntersection);
     assert(lightDirection);
 
-    return RGBR_f(255, 0, 0, 1);
+
+    return RGBR_f(255, 0, 0, 255);
 }*/
 
 
@@ -64,10 +65,6 @@
 
     return color;
 }*/
-
-
-
-
 
 // Implements diffuse shading using the lambertian lighting model
 /*RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection, Light *light)

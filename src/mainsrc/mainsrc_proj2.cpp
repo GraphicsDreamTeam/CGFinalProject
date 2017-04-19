@@ -25,11 +25,11 @@ using namespace std;
 #include "Sphere.h"
 #include "Triangle.h"
 #include "defs.h"
+#include "Mesh.h"
 #include "Shader.h"
 #include "Phong.h"
 #include "Material.h"
 #include "Lambertian.h"
-
 
 // globals
 //---------------------------------
@@ -62,39 +62,29 @@ void Setup(void)
     // renderMode = LAMBERTIAN;
     // renderMode = PHONG;
 
-    Material metal = *(new Material(new Phong(1.5, 0.9)));
-    Material plastic = *(new Material(new Lambertian(1.5)));
+    Material metal = Material(new Phong(1.5, 0.9));
+    Material plastic = Material(new Lambertian(1.5));
 
     // We set the image size here because it makes the most sense.
     imageSize = new STVector2(1000, 1000);
 
     pScene = new Scene();
+    pRayTracer = new RayTracer();
 
-    STVector3 cameraPosition(0, 0, 5);
+    STVector3 cameraPosition(10, 2, 0);
     STVector3 cameraLookAt = STVector3::Zero - cameraPosition;
     cameraLookAt.Normalize();
 
-    Camera* camera = new Camera(cameraLookAt, cameraPosition, STVector3(0.0f, 1.0f, -1.0f));
+    Camera* camera = new Camera(cameraLookAt, cameraPosition, STVector3(1.0f, 0.0f, 0.0f));
     camera->SetFov(100);
 
     pScene->SetCamera(camera);
-
-    pScene->SetBackgroundColor(RGBR_f(0, 0, 0, 1));
-
-    pScene->AddLight(Light(STVector3(10, 0, -5), RGBR_f(255, 0, 0, 255), 40, "Light1"));
-    pScene->AddLight(Light(STVector3(-1, 0.0, 1.5), RGBR_f(255, 0, 0, 255), 2, "Light1"));
-    // pScene->AddLight(Light(STVector3(-10, 0, -5), RGBR_f(0, 0, 255, 255), 40, "Light2"));
-
-    Sphere* sphere1 = new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255), plastic);
-    Sphere* sphere2 = new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255), plastic);
-    Triangle* triangle1 = new Triangle(STVector3(0, -3, 0), STVector3(1, -2, 0), STVector3(0, -1, 0), RGBR_f(255, 255, 255, 255), metal);
-
-    pScene->AddSurface(sphere1);
-    pScene->AddSurface(sphere2);
-    pScene->AddSurface(triangle1);
-
-    pRayTracer = new RayTracer();
-
+    pScene->SetBackgroundColor(RGBR_f(0, 0, 0, 1)); // Does nothing right now
+    pScene->AddLight(Light(STVector3(5, -3, -3), RGBR_f(0, 0, 255, 255), 20, "Light1"));
+    pScene->AddLight(Light(STVector3(5, 3, 3), RGBR_f(255, 0, 0, 255), 20, "Light1"));
+    pScene->AddSurface(new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255), metal));
+    pScene->AddSurface(new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255), metal));
+    pScene->AddSurface(new Mesh("../../data/meshes/bigcubeinverted.obj", STVector3(-13.5, -13.5, -13.5), RGBR_f(255, 255, 255, 255), plastic));
 }
 
 

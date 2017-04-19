@@ -28,7 +28,6 @@ Sphere::~Sphere()
 
 }
 
-
 //----------------------------------------------------------------------------
 // Compute the closest intersection point with the ray
 // if it an intersection exist, return true; otherwise false
@@ -39,30 +38,23 @@ bool Sphere::FindIntersection(Ray ray, Intersection *pIntersection)
     STVector3 L = m_center - ray.Origin();
     double t_ca = STVector3::Dot(L, ray.Direction());
 
-    if (t_ca < 0) {
+    if (t_ca < 0)
+    {
         return false;
     }
 
     double d = sqrt(L.LengthSq() - pow(t_ca, 2.0));
 
-    if (d > m_radius) {
+    if (d > m_radius) // zero hits, ignore.
+    {
+        // std::cout << "outside circle"
         return false;
-    } else if (d == m_radius) { // tangent, one hit, but we ignore that
-
-        // double t = t_ca;
-        // STVector3 point = ray.Origin() + ray.Direction()*t;
-        // STVector3 normal = (point - m_center);
-        // normal.Normalize();
-
-        // pIntersection->distanceSqu = pow(t, 2.0);
-        // pIntersection->surface = this;
-        // pIntersection->point = point;
-        // pIntersection->normal = normal;
-        // pIntersection->cameraLookingDirection = ray.Direction();
-
+    } else if (d == m_radius)  // tangent, one hit, but we ignore that
+    {
         return false;
-    } else { // two hits
-
+    } else // two hits
+    {
+        // std::cout << "HIT SPHERE GOOD" << std::endl;
         double t_hc = sqrt(pow(m_radius, 2.0) - pow(d, 2.0));
 
         double t0 = t_ca - t_hc;
