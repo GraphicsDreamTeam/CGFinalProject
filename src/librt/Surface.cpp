@@ -9,20 +9,19 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string>
+#include "Material.h"
+#include "Lambertian.h"
 
-
-
-Surface::Surface(void)
-{
-
+Surface::Surface(void) {
+	SetColor(RGBR_f(255, 255, 255, 255));
+	// SetMaterial(Material(Lambertian(0.9)));
 }
 
-
-Surface::~Surface()
+Surface::Surface(RGBR_f newColor, Material newMaterial)
 {
-
+    SetColor(newColor);
+    SetMaterial(newMaterial);
 }
-
 
 RGBR_f Surface::GetColor(void) {
 	return color;
@@ -32,18 +31,12 @@ void Surface::SetColor(RGBR_f newColor) {
 	color = newColor;
 }
 
-// Returns the closest intersection point
-int Surface::FindClosestIntersection(Intersection *pIntersection)
+Material Surface::GetMaterial (void)
 {
-    // TO DO: Proj2 raytracer
-    //          - Find the closest intersection.
-    // 1. Return the closest intersection in m_intersections
-    //    0 returned for no intersection; otherwise the number
-    //    of close intersections within a small threshold
-    //    and the pIntersection is updated with the closest intersection
-    //------------------------------------------------
-    //------------------------------------------------
-
-    return(0);
+    return material;
 }
 
+void Surface::SetMaterial (Material material_in)
+{
+    material = material_in;
+}

@@ -17,14 +17,14 @@
 #include "Ray.h"
 #include "Intersection.h"
 #include <string.h>
-
+#include "Material.h"
 
 class Mesh : public Surface
 {
 
 public:
                                 Mesh                        (void);
-                                Mesh                        (const std::string& fileName, STVector3 position_in, RGBR_f color_in);
+                                Mesh                        (const std::string& fileName, STVector3 position_in, RGBR_f color_in, Material material);
                                 ~Mesh                       (void);
 
     bool                        FindIntersection            (Ray ray, Intersection *pIntersection);

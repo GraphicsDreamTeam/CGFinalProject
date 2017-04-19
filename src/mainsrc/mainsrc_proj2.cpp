@@ -26,7 +26,10 @@ using namespace std;
 #include "Triangle.h"
 #include "defs.h"
 #include "Mesh.h"
-
+#include "Shader.h"
+#include "Phong.h"
+#include "Material.h"
+#include "Lambertian.h"
 
 // globals
 //---------------------------------
@@ -34,7 +37,6 @@ using namespace std;
 Scene       *pScene = NULL;     // scene geometry and lights
 RayTracer   *pRayTracer = NULL; // runs ray tracing algorithm
 STVector2   *imageSize;
-RenderMode  renderMode;
 
 // mouse
 int gPreviousMouseX = -1;
@@ -58,7 +60,10 @@ void Setup(void)
 {
     // renderMode = HIT;
     // renderMode = LAMBERTIAN;
-    renderMode = PHONG;
+    // renderMode = PHONG;
+
+    Material metal = Material(new Phong(1.5, 0.9));
+    Material plastic = Material(new Lambertian(1.5));
 
     // We set the image size here because it makes the most sense.
     imageSize = new STVector2(1000, 1000);
@@ -66,7 +71,7 @@ void Setup(void)
     pScene = new Scene();
     pRayTracer = new RayTracer();
 
-    STVector3 cameraPosition(4, 1, 0);
+    STVector3 cameraPosition(10, 2, 0);
     STVector3 cameraLookAt = STVector3::Zero - cameraPosition;
     cameraLookAt.Normalize();
 
@@ -75,11 +80,11 @@ void Setup(void)
 
     pScene->SetCamera(camera);
     pScene->SetBackgroundColor(RGBR_f(0, 0, 0, 1)); // Does nothing right now
-    pScene->AddLight(Light(STVector3(0, 0, 0), RGBR_f(0, 0, 255, 255), 10, "Light1"));
-    pScene->AddLight(Light(STVector3(0, 0, 0), RGBR_f(255, 0, 0, 255), 10, "Light1"));
-    // pScene->AddSurface(new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255)));
-    // pScene->AddSurface(new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255)));
-    pScene->AddSurface(new Mesh("../../data/meshes/bigcubeinverted.obj", STVector3(-5, -5, -5), RGBR_f(255, 255, 255, 255)));
+    pScene->AddLight(Light(STVector3(5, -3, -3), RGBR_f(0, 0, 255, 255), 20, "Light1"));
+    pScene->AddLight(Light(STVector3(5, 3, 3), RGBR_f(255, 0, 0, 255), 20, "Light1"));
+    pScene->AddSurface(new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255), metal));
+    pScene->AddSurface(new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255), metal));
+    pScene->AddSurface(new Mesh("../../data/meshes/bigcubeinverted.obj", STVector3(-13.5, -13.5, -13.5), RGBR_f(255, 255, 255, 255), plastic));
 }
 
 
@@ -134,22 +139,14 @@ void KeyCallback(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
-
-
-// If the commandline input is incorrect, notifies the user.
-void usage(const char *myname)
-{
-    fprintf(stderr, "Usage: %s\nmodes:\n1 Lambertian\n2 Phong\n3 Mirror\n4 Environment Map\n5 Effect_1\n6 Effect_2\n7 Effect_3", myname);
-    exit(0);
-}
-
 int main(int argc, char** argv)
 {
     // Initializes the scene
     Setup();
 
+
     // run the ray tracer
-    pRayTracer->Run(pScene, imageSize, "output.png", renderMode);
+    pRayTracer->Run(pScene, imageSize, "output.png");
 
     return 0;
 }

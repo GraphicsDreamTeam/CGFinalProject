@@ -7,67 +7,67 @@
 // Shader class - computes shading functions
 //------------------------------------------------------------------------------------------------
 
-#include "Shader.h"
-#include <assert.h>
-#include "Intersection.h"
-#include <stdio.h>
-#include "Surface.h"
-#include <algorithm>
-
-
-Shader::Shader(void)
-    : m_mode          (LAMBERTIAN)
-{
-}
-
-
-void Shader::SetMode(RenderMode mode)
-{
-    m_mode = mode;
-}
-
-
 // Runs the shader according to the specified render mode
-RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
+/*RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
     RGBR_f color;
 
     switch (m_mode) {
         case LAMBERTIAN:
-            color = Lambertian(pIntersection, lightDirection, light);
+            color = Lambertian(pIntersection, lightDirection, light, pScene);
             break;
         case PHONG:
-            color = Phong(pIntersection, lightDirection, light);
+            color = Phong(pIntersection, lightDirection, light, pScene);
             break;
         case HIT:
-            color = Hit(pIntersection, lightDirection, light);
+            color = Hit(pIntersection, lightDirection, light, pScene);
+            break;
+        case PHOTON:
+            color = Photon(pIntersection, lightDirection, light,pScene);
             break;
         default:
-            color = Hit(pIntersection, lightDirection, light);
+            color = Hit(pIntersection, lightDirection, light, pScene);
             break;
         }
 
-    // TO DO: Proj2 raytracer
-    //          - Add special effects.
-    // 1. Add calls to your new special effects function to the switch statement
-    // 2. Update the RenderMode structure in def.h to flag these
-    //---------------------------------------------------------
-    //---------------------------------------------------------
-
     return(color);
-}
+}*/
 
 // Implements a simple red colorer if we hit something.
-RGBR_f Shader::Hit(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
+/*RGBR_f Shader::Hit(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
     assert(pIntersection);
     assert(lightDirection);
 
+
     return RGBR_f(255, 0, 0, 255);
-}
+}*/
+
+
+
+// Implements a simple red colorer if we hit something.
+/*RGBR_f Shader::Photon(Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene* pScene)
+{
+   // assert(pIntersection);
+   // assert(lightDirection);
+
+    RGBR_f color = RGBR_f(0,0,0,255);
+
+        //    std::cout<<"PHOTONS:"<<pScene->GetPhotons()->size()<<"\n";
+
+    for(int i=0;i<pScene->GetPhotons()->size();i++){
+
+        if((pScene->GetPhotons()->at(i)->GetIntersection().point - pIntersection->point).LengthSq() <= 0.001){
+            color += RGBR_f(5,0,0,255);
+        }
+
+    }
+
+    return color;
+}*/
 
 // Implements diffuse shading using the lambertian lighting model
-RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
+/*RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
     assert(pIntersection);
     assert(lightDirection);
@@ -83,22 +83,22 @@ RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection
     diffuseColor.a = 255;
 
     return(diffuseColor);
-}
+}*/
 
 // Implements diffuse shading using the lambertian lighting model
-RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
+/*RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
 
     assert(pIntersection);
     assert(lightDirection);
 
     RGBR_f finalColor;
-
+    //RGBR_f photonColor = gatherPhotons(pIntersection); //merge in the photon color how?
     // Ambient
     // Handled in raytracer
 
     // Diffuse component
-    RGBR_f diffuseColor = Lambertian(pIntersection, lightDirection, light);
+    RGBR_f diffuseColor = Lambertian(pIntersection, lightDirection, light, pScene);
 
     // Specular component
     STVector3 d = pIntersection->cameraLookingDirection;
@@ -113,22 +113,9 @@ RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Lig
     RGBR_f reflectedColor = RGBR_f::Min(pIntersection->surface->GetColor(), light->GetColor()); // or multiplicative average?
     RGBR_f specularColor = reflectedColor *= specularFactor;
 
+    //finalColor += photonColor;      //added Nathan
     finalColor += diffuseColor;
     finalColor += specularColor;
 
     return(finalColor);
-}
-
-
-Shader::~Shader()
-{
-}
-
-
-// TO DO: Proj2 raytracer
-//          - Add shading functions for special effects.
-// 1. Declare functions for your special effects in the .h file
-// 2. See the Run function to see when each shading function is called
-//---------------------------------------------------------
-//---------------------------------------------------------
-
+}*/

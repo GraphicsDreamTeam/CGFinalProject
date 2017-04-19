@@ -23,8 +23,9 @@ Triangle::Triangle(void)
 
 }
 
-Triangle::Triangle(STVector3 m_a_in, STVector3 m_b_in, STVector3 m_c_in, RGBR_f color_in) : m_a(m_a_in), m_b(m_b_in), m_c(m_c_in) {
+Triangle::Triangle(STVector3 m_a_in, STVector3 m_b_in, STVector3 m_c_in, RGBR_f color_in, Material material) : m_a(m_a_in), m_b(m_b_in), m_c(m_c_in) {
     SetColor(color_in);
+    SetMaterial(material);
 }
 
 // clean up

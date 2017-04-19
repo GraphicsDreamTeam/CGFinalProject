@@ -14,7 +14,7 @@
 #include "STVector3.h"
 #include "Ray.h"
 #include "Intersection.h"
-
+#include "Material.h"
 
 
 class Triangle : public Surface
@@ -22,7 +22,7 @@ class Triangle : public Surface
 
 public:
                                 Triangle                        (void);
-                                Triangle                        (STVector3 m_a_in, STVector3 m_b_in, STVector3 m_c_in, RGBR_f color_in);
+                                Triangle                        (STVector3 m_a_in, STVector3 m_b_in, STVector3 m_c_in, RGBR_f color_in, Material material);
                                 ~Triangle                       (void);
 
     bool                        FindIntersection                (Ray ray, Intersection *pIntersection);

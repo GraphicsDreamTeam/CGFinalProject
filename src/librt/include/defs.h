@@ -17,10 +17,14 @@
 // render modes for the raytracer class
 // determines the type of image created
 typedef enum {
-    HIT				= 1,
-    LAMBERTIAN      = 2,
-    PHONG           = 3
-}RenderMode;
+	METAL,
+	MATTE,
+	GLASS
+	// Metal = Phong(1.5, 0.9);
+    // HIT				= 1,
+    // LAMBERTIAN      = 2,
+    // PHONG           = 3
+} Materials;
 
 
 

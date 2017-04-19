@@ -16,10 +16,13 @@
 #include "Surface.h"
 #include <stdexcept>
 #include "Intersection.h"
+#include "Material.h"
 
-Mesh::Mesh(const std::string& fileName, STVector3 position_in, RGBR_f color_in) : position(position_in)
+
+Mesh::Mesh(const std::string& fileName, STVector3 position_in, RGBR_f color_in, Material material) : position(position_in)
 {
     SetColor(color_in);
+    SetMaterial(material);
     readFile(fileName);
 }
 
@@ -122,7 +125,7 @@ void Mesh::readFile(const std::string& fileName)
                 std::cout << "\t\tVertex 2: " << mVertices[p2 - 1] << std::endl;
                 std::cout << "\t\tVertex 3: " << mVertices[p3 - 1] << std::endl;
 
-                triangles.push_back(new Triangle(mVertices[p1 - 1], mVertices[p2 - 1], mVertices[p3 - 1], GetColor()));
+                triangles.push_back(new Triangle(mVertices[p1 - 1], mVertices[p2 - 1], mVertices[p3 - 1], GetColor(), GetMaterial()));
             }
         }
     }
