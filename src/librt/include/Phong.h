@@ -16,6 +16,7 @@
 #include "STVector3.h"
 #include "defs.h"
 #include "Shader.h"
+#include "Scene.h"
 
 class Phong : public Shader {
 
@@ -23,7 +24,7 @@ public:
 
                                         Phong                       (float diffuseValue, float specularColor);
 
-            RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
+            RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene *pScene);
 
 private:
 

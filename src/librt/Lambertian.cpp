@@ -9,7 +9,7 @@ Lambertian::Lambertian (float diffuseValue) : diffuseValue(diffuseValue)
 
 }
 
-RGBR_f Lambertian::Shade (Intersection *pIntersection, STVector3 *lightDirection, Light *light)
+RGBR_f Lambertian::Shade (Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene *pScene)
 {
 	double diffuseFactor = std::max(0.0f, STVector3::Dot(pIntersection->normal, *lightDirection));
 	diffuseFactor *= light->GetIntensity(pIntersection->point); // How Intensity effects the light

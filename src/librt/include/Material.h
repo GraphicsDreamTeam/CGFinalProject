@@ -16,7 +16,7 @@
 #include "Material.h"
 #include "RGBR_f.h"
 #include "Shader.h"
-
+#include "Scene.h"
 
 class Material
 {
@@ -27,7 +27,7 @@ class Material
                                     Material                             (Shader* shader);
                                     ~Material 							 (void);
 
-    RGBR_f                  Shade                                (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
+    RGBR_f                  Shade                                (Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene *pScene);
 
 protected:
 

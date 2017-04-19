@@ -23,7 +23,7 @@ public:
 
                                         PhotonShader                 (void);
 
-            RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
+            RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene *pScene);
 
 private:
 

@@ -10,7 +10,7 @@ Phong::Phong (float diffuseValue, float specularValue) : diffuseValue(diffuseVal
 
 }
 
-RGBR_f Phong::Shade (Intersection *pIntersection, STVector3 *lightDirection, Light *light)
+RGBR_f Phong::Shade (Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene *pScene)
 {
 	RGBR_f finalColor;
 
@@ -18,7 +18,7 @@ RGBR_f Phong::Shade (Intersection *pIntersection, STVector3 *lightDirection, Lig
     // Handled in raytracer
 
     // Diffuse component
-    RGBR_f diffuseColor = Lambertian(diffuseValue).Shade(pIntersection, lightDirection, light);
+    RGBR_f diffuseColor = Lambertian(diffuseValue).Shade(pIntersection, lightDirection, light, pScene);
 
     // Specular component
     STVector3 d = pIntersection->cameraLookingDirection;

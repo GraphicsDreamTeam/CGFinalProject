@@ -83,7 +83,7 @@ RGBR_f RayTracer::Shade(Scene *pScene, Intersection *pIntersection)
             }
         }
 
-        color += pIntersection->surface->GetMaterial().Shade(pIntersection, &shadowDirection, &light);
+        color += pIntersection->surface->GetMaterial().Shade(pIntersection, &shadowDirection, &light, pScene);
 
         LightLoop:
         continue;

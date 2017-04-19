@@ -24,7 +24,7 @@ class Shader {
 
 public:
 
-    virtual RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light) { std::cout << "Caught in shader" << std::endl; return RGBR_f(0, 255, 0, 0); };
+    virtual RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene *pScene) { std::cout << "Caught in shader" << std::endl; return RGBR_f(0, 255, 0, 0); };
 
 };
 
