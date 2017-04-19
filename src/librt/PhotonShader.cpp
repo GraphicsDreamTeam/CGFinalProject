@@ -26,11 +26,12 @@ RGBR_f PhotonShader::Shade (Intersection *pIntersection, STVector3 *lightDirecti
             float weight = std::max(0.0f, STVector3::Dot(surfNorm, photons->at(i)->GetDirection()));
             weight *= (1.0f - sqrt(photons->at(i)->GetDistSquared())) / 25.0f;
 
-            float weight2 = pow((1.0f - (distance / 0.07f)), 2.0) / 25.0f;
+            float weight2 = pow((1.0f - (distance / 0.07f)), 2.0);
 
-            photonColor += (photons->at(i)->GetColor() * weight2);
-            photonColor = RGBR_f::Min(pIntersection->surface->GetColor(), photonColor);
+            photonColor += (photons->at(i)->GetColor() * weight * weight2);
+           
         }
     }
+     photonColor = RGBR_f::Min(pIntersection->surface->GetColor(), photonColor);
     return photonColor;
 }
