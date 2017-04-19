@@ -7,28 +7,8 @@
 // Shader class - computes shading functions
 //------------------------------------------------------------------------------------------------
 
-#include "Shader.h"
-#include <assert.h>
-#include "Intersection.h"
-#include <stdio.h>
-#include "Surface.h"
-#include <algorithm>
-#include <cmath>
-
-Shader::Shader(void)
-    : m_mode          (LAMBERTIAN)
-{
-}
-
-
-void Shader::SetMode(RenderMode mode)
-{
-    m_mode = mode;
-}
-
-
 // Runs the shader according to the specified render mode
-RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene* pScene)
+/*RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
     RGBR_f color;
 
@@ -50,29 +30,22 @@ RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light
             break;
         }
 
-    // TO DO: Proj2 raytracer
-    //          - Add special effects.
-    // 1. Add calls to your new special effects function to the switch statement
-    // 2. Update the RenderMode structure in def.h to flag these
-    //---------------------------------------------------------
-    //---------------------------------------------------------
-
     return(color);
-}
+}*/
 
 // Implements a simple red colorer if we hit something.
-RGBR_f Shader::Hit(Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene* pScene)
+/*RGBR_f Shader::Hit(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
     assert(pIntersection);
     assert(lightDirection);
 
     return RGBR_f(255, 0, 0, 1);
-}
+}*/
 
 
 
 // Implements a simple red colorer if we hit something.
-RGBR_f Shader::Photon(Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene* pScene)
+/*RGBR_f Shader::Photon(Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene* pScene)
 {
    // assert(pIntersection);
    // assert(lightDirection);
@@ -90,14 +63,14 @@ RGBR_f Shader::Photon(Intersection *pIntersection, STVector3 *lightDirection, Li
     }
 
     return color;
-}
+}*/
 
 
 
 
 
 // Implements diffuse shading using the lambertian lighting model
-RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene* pScene)
+/*RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
     assert(pIntersection);
     assert(lightDirection);
@@ -113,10 +86,10 @@ RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection
     diffuseColor.a = 255;
 
     return(diffuseColor);
-}
+}*/
 
 // Implements diffuse shading using the lambertian lighting model
-RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene* pScene)
+/*RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
 
     assert(pIntersection);
@@ -148,40 +121,4 @@ RGBR_f Shader::Phong(Intersection *pIntersection, STVector3 *lightDirection, Lig
     finalColor += specularColor;
 
     return(finalColor);
-}
-
-/////
-// below is photon mapping code
-/////
-
-/*RGBR_f gatherPhotons(Intersection *pIntersection){
-  RGBR_f photonColor(0.0,0.0,0.0,255.0);  
-  STVector3 N = pIntersection->normal;                   //Surface Normal at Current Point
-  for (int i = 0; i < numPhotons[type][id]; i++){                    //Photons Which Hit Current Object
-    if (gatedSqDist3(pIntersection,photons[type][id][i][0],sqRadius)){           //Is Photon Close to Point?
-      float weight = max(0.0, -dot3(N, photons[type][id][i][1] ));   //Single Photon Diffuse Lighting
-      weight *= (1.0 - sqrt(gSqDist)) / exposure;                    //Weight by Photon-Point Distance
-      photonColor = add3(photonColor, mul3c(photons[type][id][i][2], weight)); //Add Photon's color to Total
-   }} 
-  return photonColor;
 }*/
-
-
-
-
-
-
-
-
-Shader::~Shader()
-{
-}
-
-
-// TO DO: Proj2 raytracer
-//          - Add shading functions for special effects.
-// 1. Declare functions for your special effects in the .h file
-// 2. See the Run function to see when each shading function is called
-//---------------------------------------------------------
-//---------------------------------------------------------
-

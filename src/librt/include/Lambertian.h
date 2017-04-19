@@ -3,30 +3,33 @@
 // 10 February 2006
 // Copyright 2006
 //
-// Shader.h
+// Lambertian.h
 // Computes Shading
 // RenderMode mode determines the type of shading algorithm used
 // Given a normal, light direction, color and other shading input
 //------------------------------------------------------------------------------------------------
 
 
-#ifndef _SHADER_H
-#define _SHADER_H
+#ifndef _LAMBERTIAN_H
+#define _LAMBERTIAN_H
 
 #include "STVector3.h"
 #include "defs.h"
-#include "Scene.h"
+#include "Shader.h"
 
-class Intersection;
-
-
-class Shader {
+class Lambertian : public Shader {
 
 public:
 
-    virtual RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light) { std::cout << "Caught in shader" << std::endl; return RGBR_f(0, 255, 0, 0); };
+                                        Lambertian                       (float diffuseValue);
+
+     	    RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
+
+private:
+
+	float diffuseValue;
 
 };
 
 
-#endif //_SHADER_H
+#endif //_LAMBERTIAN_H

@@ -3,30 +3,34 @@
 // 10 February 2006
 // Copyright 2006
 //
-// Shader.h
+// Phong.h
 // Computes Shading
 // RenderMode mode determines the type of shading algorithm used
 // Given a normal, light direction, color and other shading input
 //------------------------------------------------------------------------------------------------
 
 
-#ifndef _SHADER_H
-#define _SHADER_H
+#ifndef _PHONG_H
+#define _PHONG_H
 
 #include "STVector3.h"
 #include "defs.h"
-#include "Scene.h"
+#include "Shader.h"
 
-class Intersection;
-
-
-class Shader {
+class Phong : public Shader {
 
 public:
 
-    virtual RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light) { std::cout << "Caught in shader" << std::endl; return RGBR_f(0, 255, 0, 0); };
+                                        Phong                       (float diffuseValue, float specularColor);
+
+            RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
+
+private:
+
+	float diffuseValue;
+	float specularValue;
 
 };
 
 
-#endif //_SHADER_H
+#endif //_PHONG_H

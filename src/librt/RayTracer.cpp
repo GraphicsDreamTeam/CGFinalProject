@@ -22,17 +22,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <math.h>
-#include <time.h> 
-
-
-
-double const RayTracer::c2w[4][4] =
-{
-    {0.4, 0.2, -0.8, 0.0},
-    {-0.4, 0.9, 0.0, 0.0},
-    {0.8, 0.3, 0.4, 0.0},
-    {5.4, 3.0, -1.0, 1.0}
-};
+#include <time.h>
 
 RayTracer::RayTracer(void)
     : m_maxLevel            (20),
@@ -51,14 +41,14 @@ RayTracer::~RayTracer()
 // Main raytracing algorithm
 // Cast Ray, Compute Intersections, Shade pixel
 //-----------------------------------------------
-void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode)
+void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName)
 {
 
 
     this->emitPhotons(pScene,2000, 4);
     //
-    
-    this->rayTrace(pScene, imageSize,fName,mode);
+
+    this->rayTrace(pScene, imageSize,fName);
 
 }
 
@@ -92,7 +82,7 @@ RGBR_f RayTracer::Shade(Scene *pScene, Intersection *pIntersection)
             }
         }
 
-        color += pShader->Run(pIntersection, &shadowDirection, &light, pScene);
+        color += pIntersection->surface->GetMaterial().Shade(pIntersection, &shadowDirection, &light);
 
         LightLoop:
         continue;
@@ -125,7 +115,7 @@ bool RayTracer::photonTrace(Scene *pScene, Photon *photon){
             bool result;
 
             photon->GetDirection().Normalize();                                                            // normalize the direction bc why not
-  
+
             Ray ray = Ray();
             ray.SetOrigin(photon->GetOrigin());
             ray.SetDirection(photon->GetDirection());
@@ -133,7 +123,7 @@ bool RayTracer::photonTrace(Scene *pScene, Photon *photon){
             Intersection* closestIntersection = NULL;
 
             for (int k = 0; k < pScene->GetSurfaceList()->size(); k++) {
- 
+
                 Intersection* returnIntersection = new Intersection();
 
                 Surface* surface = pScene->GetSurfaceList()->at(k);
@@ -174,7 +164,7 @@ bool RayTracer::photonTrace(Scene *pScene, Photon *photon){
 
 
 
-void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode){
+void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName){
     // begin
     std::cout << "Running... " << std::endl;
 
@@ -185,9 +175,6 @@ void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName,
 
     // the color redult from shading
     RGBR_f color;
-
-    // set the shader's render mode
-    pShader->SetMode(mode);
 
     SurfaceList* surfaceList = pScene->GetSurfaceList();
 
@@ -275,14 +262,14 @@ void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName,
 
 
 void RayTracer::emitPhotons(Scene *pScene, int nrPhotons, int numBounces){
-  
+
 
     srand (time(NULL));                          //Ensure Same Photons Each Time, should make this settable in setup
 
 
 //  for (int t = 0; t < nrTypes; t++)            //Initialize Photon Count to Zero for Each Object
 //    for (int i = 0; i < nrObjects[t]; i++)
-//      numPhotons[t][i] = 0; 
+//      numPhotons[t][i] = 0;
 
 for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of lights >>IS THIS A GOOD IDEA?<<
 
@@ -294,14 +281,14 @@ for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of
     //std::cout<<-1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1-(-1))))<<"\n";
 
     initDirection.Normalize();
- 
+
     Photon *photon = new Photon(pScene->GetLightList()->at(l).GetColor(),initDirection, pScene->GetLightList()->at(l).GetPosition(),numBounces);// continue work from here.  need to save photons somehow
 
 
     //Spread Out Light Source, But Don't Allow Photons Outside Room/Inside Sphere
   //  while (prevPoint[1] >= Light[1]){ prevPoint = add3(Light, STVector3( rand() % 1 - 1,rand() % 1 - 1,rand() % 1 - 1 ).Normalize() * 0.75);}
    // if (abs(prevPoint[0]) > 1.5 || abs(prevPoint[1]) > 1.2 ) bounces = nrBounces+1;
-    
+
 
     bool hit = photonTrace(pScene,photon);                          //Trace the Photon's Path
 
@@ -326,16 +313,4 @@ for(int l = 0;l<pScene->GetLightList()->size();l++){ // go through the number of
 
   }
 }
-}
-
-
-
-
-
-
-STVector3 RayTracer::multVectMatrix(STVector3 rayOrigin) {
-
-    STVector3 output;
-
-
 }

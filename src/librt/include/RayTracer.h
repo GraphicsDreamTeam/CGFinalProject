@@ -25,7 +25,7 @@ public:
                                 RayTracer                                       (void);
                                 ~RayTracer                                      (void);
 
-    void                        Run                                             (Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode);
+    void                        Run                                             (Scene *pScene, STVector2* imageSize, std::string fName);
 
 
 
@@ -45,7 +45,7 @@ private:
     STVector3					multVectMatrix						            (STVector3 rayOrigin);
 
 
-    void                        rayTrace          (Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode);
+    void                        rayTrace          (Scene *pScene, STVector2* imageSize, std::string fName);
     bool                        photonTrace       (Scene *pScene, Photon *photon);
 
     void                        emitPhotons       (Scene *pScene, int nrPhotons, int numBounces);

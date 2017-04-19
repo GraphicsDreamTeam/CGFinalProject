@@ -25,6 +25,10 @@ using namespace std;
 #include "Sphere.h"
 #include "Triangle.h"
 #include "defs.h"
+#include "Shader.h"
+#include "Phong.h"
+#include "Material.h"
+#include "Lambertian.h"
 
 
 // globals
@@ -33,7 +37,6 @@ using namespace std;
 Scene       *pScene = NULL;     // scene geometry and lights
 RayTracer   *pRayTracer = NULL; // runs ray tracing algorithm
 STVector2   *imageSize;
-RenderMode  renderMode;
 
 // mouse
 int gPreviousMouseX = -1;
@@ -57,7 +60,10 @@ void Setup(void)
 {
     // renderMode = HIT;
     // renderMode = LAMBERTIAN;
-    renderMode = PHONG;
+    // renderMode = PHONG;
+
+    Material metal = *(new Material(new Phong(1.5, 0.9)));
+    Material plastic = *(new Material(new Lambertian(1.5)));
 
     // We set the image size here because it makes the most sense.
     imageSize = new STVector2(1000, 1000);
@@ -75,16 +81,16 @@ void Setup(void)
 
     pScene->SetBackgroundColor(RGBR_f(0, 0, 0, 1));
 
-    pScene->AddLight(Light(STVector3(0,0,2), RGBR_f(255, 0, 0, 255), 40, "Light1"));
-    //pScene->AddLight(Light(STVector3(-1, 0, 1.5), RGBR_f(255, 0, 0, 255), 2, "Light1"));
+    pScene->AddLight(Light(STVector3(10, 0, -5), RGBR_f(255, 0, 0, 255), 40, "Light1"));
+    pScene->AddLight(Light(STVector3(-1, 0.0, 1.5), RGBR_f(255, 0, 0, 255), 2, "Light1"));
     // pScene->AddLight(Light(STVector3(-10, 0, -5), RGBR_f(0, 0, 255, 255), 40, "Light2"));
 
-   // Sphere* sphere1 = new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255));
-   // Sphere* sphere2 = new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255));
-    Triangle* triangle1 = new Triangle(STVector3(0, -3, 0), STVector3(1, -2, 0), STVector3(0, -1, 0), RGBR_f(255, 255, 255, 255));
+    Sphere* sphere1 = new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255), plastic);
+    Sphere* sphere2 = new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255), plastic);
+    Triangle* triangle1 = new Triangle(STVector3(0, -3, 0), STVector3(1, -2, 0), STVector3(0, -1, 0), RGBR_f(255, 255, 255, 255), metal);
 
-   // pScene->AddSurface(sphere1);
-   // pScene->AddSurface(sphere2);
+    pScene->AddSurface(sphere1);
+    pScene->AddSurface(sphere2);
     pScene->AddSurface(triangle1);
 
     pRayTracer = new RayTracer();
@@ -143,15 +149,6 @@ void KeyCallback(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
-
-
-// If the commandline input is incorrect, notifies the user.
-void usage(const char *myname)
-{
-    fprintf(stderr, "Usage: %s\nmodes:\n1 Lambertian\n2 Phong\n3 Mirror\n4 Environment Map\n5 Effect_1\n6 Effect_2\n7 Effect_3", myname);
-    exit(0);
-}
-
 int main(int argc, char** argv)
 {
     // Initializes the scene
@@ -159,7 +156,7 @@ int main(int argc, char** argv)
 
 
     // run the ray tracer
-    pRayTracer->Run(pScene, imageSize, "output.png", renderMode);
+    pRayTracer->Run(pScene, imageSize, "output.png");
 
     return 0;
 }

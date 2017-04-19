@@ -20,7 +20,7 @@ LDFLAGS		 :=
 .PHONY : clean release mkdirs
 
 
-FILES 		 := Camera Intersection Light LinearSolver Ray RayTracer Scene Shader Sphere Surface Triangle utilities RGBR_f Photon
+FILES 		 := Camera Intersection Light LinearSolver Ray RayTracer Scene Shader Sphere Surface Triangle utilities RGBR_f Photon Material Lambertian Phong
 
 INCDIRS          := . include
 LIBDIRS          := ../libst/lib
