@@ -14,14 +14,14 @@
 #include "defs.h"
 #include "Lists.h"
 #include "Material.h"
-
+#include "RGBR_f.h"
 
 class Surface
 {
 
     public:
                                     Surface                             (void);
-                                    ~Surface                            (void);
+                                    Surface                             (RGBR_f newColor, Material newMaterial);
 
     virtual bool                    FindIntersection                     (Ray ray, Intersection *pIntersection){ return(false);}
     RGBR_f                          GetColor                            (void);

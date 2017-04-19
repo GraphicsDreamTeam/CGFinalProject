@@ -14,6 +14,7 @@
 #include "Ray.h"
 #include "Intersection.h"
 #include "RGBR_f.h"
+#include "Material.h"
 
 
 class Sphere  : public Surface
@@ -21,7 +22,7 @@ class Sphere  : public Surface
 
 public:
                                 Sphere                              (void);
-                                Sphere                              (STVector3 newVector, float radius, RGBR_f color);
+                                Sphere                              (STVector3 newVector, float radius, RGBR_f color, Material material);
                                 ~Sphere                             (void);
 
     bool                FindIntersection                    (Ray ray, Intersection *pIntersection);

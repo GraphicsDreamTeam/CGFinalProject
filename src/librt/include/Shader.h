@@ -24,11 +24,10 @@ class Shader {
 
 public:
 
-                                        Shader                       (void);
-                                        ~Shader                      (void);
+    virtual RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light) { std::cout << "Caught in shader" << std::endl; return RGBR_f(0, 255, 0, 0); };
+    bool								DidStuff					 (void);
 
-    virtual RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
 };
 
 
-#endif //_RAY_H
+#endif //_SHADER_H

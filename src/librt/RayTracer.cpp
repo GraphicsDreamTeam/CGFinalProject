@@ -45,7 +45,7 @@ RayTracer::~RayTracer()
 // Main raytracing algorithm
 // Cast Ray, Compute Intersections, Shade pixel
 //-----------------------------------------------
-void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode)
+void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName)
 {
     // begin
     std::cout << "Running... " << std::endl;
@@ -57,9 +57,6 @@ void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName, Rend
 
     // the color redult from shading
     RGBR_f color;
-
-    // set the shader's render mode
-    pShader->SetMode(mode);
 
     SurfaceList* surfaceList = pScene->GetSurfaceList();
 
@@ -175,7 +172,7 @@ RGBR_f RayTracer::Shade(Scene *pScene, Intersection *pIntersection)
             }
         }
 
-        color += pShader->Run(pIntersection, &shadowDirection, &light);
+        color += pIntersection->surface->GetMaterial().Shade(pIntersection, &shadowDirection, &light);
 
         LightLoop:
         continue;

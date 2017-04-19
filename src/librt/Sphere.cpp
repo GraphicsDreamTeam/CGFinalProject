@@ -16,9 +16,10 @@ Sphere::Sphere(void)
       m_center = STVector3(0,0,0);
 }
 
-Sphere::Sphere(STVector3 newVector, float radius, RGBR_f color) : m_radius(radius) {
+Sphere::Sphere(STVector3 newVector, float radius, RGBR_f color, Material material) : m_radius(radius) {
     m_center = newVector;
     SetColor(color);
+    SetMaterial(material);
 }
 
 // clean up here

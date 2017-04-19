@@ -8,18 +8,10 @@
 //------------------------------------------------------------------------------------------------
 
 #include "Shader.h"
-#include <assert.h>
-#include "Intersection.h"
-#include <stdio.h>
-#include "Surface.h"
-#include <algorithm>
 
-
-Shader::Shader(void)
-{
-
+bool Shader::DidStuff(void) {
+    return false;
 }
-
 
 // Runs the shader according to the specified render mode
 /*RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
@@ -105,17 +97,3 @@ Shader::Shader(void)
 
     return(finalColor);
 }*/
-
-
-Shader::~Shader()
-{
-}
-
-
-// TO DO: Proj2 raytracer
-//          - Add shading functions for special effects.
-// 1. Declare functions for your special effects in the .h file
-// 2. See the Run function to see when each shading function is called
-//---------------------------------------------------------
-//---------------------------------------------------------
-

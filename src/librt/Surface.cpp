@@ -9,19 +9,19 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string>
+#include "Material.h"
+#include "Lambertian.h"
 
-
-Surface::Surface(void)
-{
-
+Surface::Surface(void) {
+	SetColor(RGBR_f(255, 255, 255, 255));
+	// SetMaterial(Material(Lambertian(0.9)));
 }
 
-
-Surface::~Surface()
+Surface::Surface(RGBR_f newColor, Material newMaterial)
 {
-
+    SetColor(newColor);
+    SetMaterial(newMaterial);
 }
-
 
 RGBR_f Surface::GetColor(void) {
 	return color;

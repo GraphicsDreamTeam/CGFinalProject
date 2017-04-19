@@ -25,7 +25,7 @@ public:
                                 RayTracer                                       (void);
                                 ~RayTracer                                      (void);
 
-    void                        Run                                             (Scene *pScene, STVector2* imageSize, std::string fName, RenderMode mode);
+    void                        Run                                             (Scene *pScene, STVector2* imageSize, std::string fName);
 
 
 

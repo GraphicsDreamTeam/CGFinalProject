@@ -15,24 +15,19 @@
 
 #include "STVector3.h"
 #include "defs.h"
-
-
-class Intersection;
-
+#include "Shader.h"
 
 class Lambertian : public Shader {
 
 public:
 
-                                        Lambertian                       (float diffuseValue, float specularColor);
-                                        ~Lambertian                      (void);
+                                        Lambertian                       (float diffuseValue);
 
-    virtual RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
+     	    RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
 
 private:
 
-	float diffuseValue
-	float specularValue
+	float diffuseValue;
 
 };
 

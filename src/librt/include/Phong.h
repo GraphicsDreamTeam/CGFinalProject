@@ -15,23 +15,20 @@
 
 #include "STVector3.h"
 #include "defs.h"
-
-
-class Intersection;
-
+#include "Shader.h"
 
 class Phong : public Shader {
 
 public:
 
-                                        Phong                       (float diffuseValue);
-                                        ~Phong                      (void);
+                                        Phong                       (float diffuseValue, float specularColor);
 
-    virtual RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
+            RGBR_f                      Shade                        (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
 
 private:
 
-	float diffuseValue
+	float diffuseValue;
+	float specularValue;
 
 };
 

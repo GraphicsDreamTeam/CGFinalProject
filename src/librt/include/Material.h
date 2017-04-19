@@ -14,6 +14,8 @@
 #include "defs.h"
 #include "Lists.h"
 #include "Material.h"
+#include "RGBR_f.h"
+#include "Shader.h"
 
 
 class Material
@@ -21,14 +23,15 @@ class Material
 
     public:
 
-                                    Material                             (Shader shader);
-                                    ~Material                            (void);
+    								Material 							 (void);
+                                    Material                             (Shader* shader);
+                                    ~Material 							 (void);
 
-    virtual RGBR_f                  Shade                                (Intersection *pIntersection, STVector3 *lightDirection, Light *light) { return RGBR_f(0, 0, 0, 0) }
+    RGBR_f                  Shade                                (Intersection *pIntersection, STVector3 *lightDirection, Light *light);
 
 protected:
 
-    Shader                          m_shader;
+    Shader*                         m_shader;
 
 };
 
