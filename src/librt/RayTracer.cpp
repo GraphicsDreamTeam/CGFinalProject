@@ -46,7 +46,7 @@ void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName)
 {
 
 
-    this->emitPhotons(pScene,2000, 4);
+    this->emitPhotons(pScene, 200, 3);
     //
 
     this->rayTrace(pScene, imageSize,fName);

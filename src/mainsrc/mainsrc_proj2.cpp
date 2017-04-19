@@ -80,10 +80,12 @@ void Setup(void)
 
     pScene->SetCamera(camera);
     pScene->SetBackgroundColor(RGBR_f(0, 0, 0, 1)); // Does nothing right now
-    pScene->AddLight(Light(STVector3(5, -3, -3), RGBR_f(0, 0, 255, 255), 20, "Light1"));
-    pScene->AddLight(Light(STVector3(5, 3, 3), RGBR_f(255, 0, 0, 255), 20, "Light1"));
-    pScene->AddSurface(new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255), metal));
-    pScene->AddSurface(new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255), metal));
+    pScene->AddLight(Light(STVector3(5, -3, -3), RGBR_f(0, 0, 255, 255), 10, "Light1"));
+    pScene->AddLight(Light(STVector3(5, 3, 3), RGBR_f(255, 0, 0, 255), 10, "Light2"));
+    pScene->AddLight(Light(STVector3(5, 3, -3), RGBR_f(0, 255, 0, 255), 10, "Light3"));
+    pScene->AddLight(Light(STVector3(5, -3, 3), RGBR_f(255, 255, 0, 255), 10, "Light4"));
+    pScene->AddSurface(new Sphere(STVector3(2.2, 0.15, -1.17), 0.5, RGBR_f(255, 255, 255, 255), metal));
+    pScene->AddSurface(new Sphere(STVector3(0, 0, 0), 2, RGBR_f(255, 255, 255, 255), metal));
     pScene->AddSurface(new Mesh("../../data/meshes/bigcubeinverted.obj", STVector3(-13.5, -13.5, -13.5), RGBR_f(255, 255, 255, 255), plastic));
 }
 
