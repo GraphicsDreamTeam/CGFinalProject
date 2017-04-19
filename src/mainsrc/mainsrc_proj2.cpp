@@ -82,15 +82,15 @@ void Setup(void)
     pScene->SetBackgroundColor(RGBR_f(0, 0, 0, 1));
 
     pScene->AddLight(Light(STVector3(10, 0, -5), RGBR_f(255, 0, 0, 255), 40, "Light1"));
-    pScene->AddLight(Light(STVector3(-1, 0, 1.5), RGBR_f(255, 0, 0, 255), 2, "Light1"));
+    pScene->AddLight(Light(STVector3(-1, 0.0, 1.5), RGBR_f(255, 0, 0, 255), 2, "Light1"));
     // pScene->AddLight(Light(STVector3(-10, 0, -5), RGBR_f(0, 0, 255, 255), 40, "Light2"));
 
-    Sphere* sphere1 = new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255), metal);
-    // Sphere* sphere2 = new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255), metal);
-    Triangle* triangle1 = new Triangle(STVector3(0, -3, 0), STVector3(1, -2, 0), STVector3(0, -1, 0), RGBR_f(255, 255, 255, 255), plastic);
+    Sphere* sphere1 = new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255), plastic);
+    Sphere* sphere2 = new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255), plastic);
+    Triangle* triangle1 = new Triangle(STVector3(0, -3, 0), STVector3(1, -2, 0), STVector3(0, -1, 0), RGBR_f(255, 255, 255, 255), metal);
 
     pScene->AddSurface(sphere1);
-    // pScene->AddSurface(sphere2);
+    pScene->AddSurface(sphere2);
     pScene->AddSurface(triangle1);
 
     pRayTracer = new RayTracer();
@@ -153,6 +153,7 @@ int main(int argc, char** argv)
 {
     // Initializes the scene
     Setup();
+
 
     // run the ray tracer
     pRayTracer->Run(pScene, imageSize, "output.png");

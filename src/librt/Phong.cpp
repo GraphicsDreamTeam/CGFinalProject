@@ -28,7 +28,7 @@ RGBR_f Phong::Shade (Intersection *pIntersection, STVector3 *lightDirection, Lig
 
     double specularFactor = (pow(std::max(0.0f, STVector3::Dot(r, *lightDirection)), 64.0));
     specularFactor *= light->GetIntensity(pIntersection->point); // How Intensity effects the light
-    specularFactor *= 1.5; // How the lambert diffuse coefficient effects the light
+    specularFactor *= specularValue; // How the lambert diffuse coefficient effects the light
 
     RGBR_f reflectedColor = RGBR_f::Min(pIntersection->surface->GetColor(), light->GetColor()); // or multiplicative average?
     RGBR_f specularColor = reflectedColor *= specularFactor;

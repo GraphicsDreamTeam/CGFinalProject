@@ -13,8 +13,8 @@
 #include "Ray.h"
 #include "Lists.h"
 #include "RGBR_f.h"
-
-
+#include <vector>
+#include "Photon.h"
 class Scene
 {
 
@@ -35,7 +35,12 @@ public:
     SurfaceList                *GetSurfaceList                              (void);
     void                        SetCamera                                   (Camera* camera);
 
+    std::vector<Photon*>       *GetPhotons                                 (void);
+    void                        SetPhotons                                 (std::vector<Photon*> photonList);
 private:
+
+    //phtons
+    std::vector<Photon*>          photonList;
 
 
     // surfaces

@@ -13,7 +13,7 @@ RGBR_f Lambertian::Shade (Intersection *pIntersection, STVector3 *lightDirection
 {
 	double diffuseFactor = std::max(0.0f, STVector3::Dot(pIntersection->normal, *lightDirection));
 	diffuseFactor *= light->GetIntensity(pIntersection->point); // How Intensity effects the light
-	diffuseFactor *= 0.9; // How the lambert diffuse coefficient effects the light
+	diffuseFactor *= diffuseValue; // How the lambert diffuse coefficient effects the light
 
 	RGBR_f reflectedColor = RGBR_f::Min(pIntersection->surface->GetColor(), light->GetColor()); // or multiplicative average?
 	RGBR_f diffuseColor = reflectedColor * diffuseFactor;

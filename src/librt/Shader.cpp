@@ -7,12 +7,6 @@
 // Shader class - computes shading functions
 //------------------------------------------------------------------------------------------------
 
-#include "Shader.h"
-
-bool Shader::DidStuff(void) {
-    return false;
-}
-
 // Runs the shader according to the specified render mode
 /*RGBR_f Shader::Run(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
 {
@@ -20,16 +14,19 @@ bool Shader::DidStuff(void) {
 
     switch (m_mode) {
         case LAMBERTIAN:
-            color = Lambertian(pIntersection, lightDirection, light);
+            color = Lambertian(pIntersection, lightDirection, light, pScene);
             break;
         case PHONG:
-            color = Phong(pIntersection, lightDirection, light);
+            color = Phong(pIntersection, lightDirection, light, pScene);
             break;
         case HIT:
-            color = Hit(pIntersection, lightDirection, light);
+            color = Hit(pIntersection, lightDirection, light, pScene);
+            break;
+        case PHOTON:
+            color = Photon(pIntersection, lightDirection, light,pScene);
             break;
         default:
-            color = Hit(pIntersection, lightDirection, light);
+            color = Hit(pIntersection, lightDirection, light, pScene);
             break;
         }
 
@@ -44,6 +41,33 @@ bool Shader::DidStuff(void) {
 
     return RGBR_f(255, 0, 0, 1);
 }*/
+
+
+
+// Implements a simple red colorer if we hit something.
+/*RGBR_f Shader::Photon(Intersection *pIntersection, STVector3 *lightDirection, Light *light, Scene* pScene)
+{
+   // assert(pIntersection);
+   // assert(lightDirection);
+
+    RGBR_f color = RGBR_f(0,0,0,255);
+
+        //    std::cout<<"PHOTONS:"<<pScene->GetPhotons()->size()<<"\n";
+
+    for(int i=0;i<pScene->GetPhotons()->size();i++){
+
+        if((pScene->GetPhotons()->at(i)->GetIntersection().point - pIntersection->point).LengthSq() <= 0.001){
+            color += RGBR_f(5,0,0,255);
+        }
+
+    }
+
+    return color;
+}*/
+
+
+
+
 
 // Implements diffuse shading using the lambertian lighting model
 /*RGBR_f Shader::Lambertian(Intersection *pIntersection, STVector3 *lightDirection, Light *light)
@@ -72,12 +96,12 @@ bool Shader::DidStuff(void) {
     assert(lightDirection);
 
     RGBR_f finalColor;
-
+    //RGBR_f photonColor = gatherPhotons(pIntersection); //merge in the photon color how?
     // Ambient
     // Handled in raytracer
 
     // Diffuse component
-    RGBR_f diffuseColor = Lambertian(pIntersection, lightDirection, light);
+    RGBR_f diffuseColor = Lambertian(pIntersection, lightDirection, light, pScene);
 
     // Specular component
     STVector3 d = pIntersection->cameraLookingDirection;
@@ -92,6 +116,7 @@ bool Shader::DidStuff(void) {
     RGBR_f reflectedColor = RGBR_f::Min(pIntersection->surface->GetColor(), light->GetColor()); // or multiplicative average?
     RGBR_f specularColor = reflectedColor *= specularFactor;
 
+    //finalColor += photonColor;      //added Nathan
     finalColor += diffuseColor;
     finalColor += specularColor;
 
