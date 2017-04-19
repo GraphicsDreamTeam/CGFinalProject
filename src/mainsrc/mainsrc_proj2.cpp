@@ -77,8 +77,8 @@ void Setup(void)
     pScene->SetBackgroundColor(RGBR_f(0, 0, 0, 1)); // Does nothing right now
     pScene->AddLight(Light(STVector3(0, 0, 0), RGBR_f(0, 0, 255, 255), 10, "Light1"));
     pScene->AddLight(Light(STVector3(0, 0, 0), RGBR_f(255, 0, 0, 255), 10, "Light1"));
-    pScene->AddSurface(new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255)));
-    pScene->AddSurface(new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255)));
+    // pScene->AddSurface(new Sphere(STVector3(1.7, 0.15, -1.15), 0.35, RGBR_f(255, 255, 255, 255)));
+    // pScene->AddSurface(new Sphere(STVector3(0, 0, 0), 0.75, RGBR_f(255, 255, 255, 255)));
     pScene->AddSurface(new Mesh("../../data/meshes/bigcubeinverted.obj", STVector3(-5, -5, -5), RGBR_f(255, 255, 255, 255)));
 }
 
