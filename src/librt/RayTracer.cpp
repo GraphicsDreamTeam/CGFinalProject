@@ -45,9 +45,11 @@ RayTracer::~RayTracer()
 void RayTracer::Run(Scene *pScene, STVector2* imageSize, std::string fName)
 {
 
+    std::cout << "Emitting photons" << std::endl;
 
-    this->emitPhotons(pScene, 200, 2);
-    //
+    this->emitPhotons(pScene, 2000, 1);
+
+    std::cout << "Photons emitted, beginning ray trace routine" << std::endl;
 
     this->rayTrace(pScene, imageSize,fName);
 
@@ -93,23 +95,6 @@ RGBR_f RayTracer::Shade(Scene *pScene, Intersection *pIntersection)
 }
 
 
-//------------------------------------------------------
-// Always render with a minimum color so that the scene
-// is not black
-//------------------------------------------------------
-bool RayTracer::MinimumColor(RGBR_f color)
-{
-    if((color.r  >= m_intensityThreshold) ||
-       (color.g >= m_intensityThreshold) ||
-       (color.b >= m_intensityThreshold)) {
-        return(true);
-    }
-
-
-    return(false);
-}
-
-
 //photon tracer function
 bool RayTracer::photonTrace(Scene *pScene, Photon *photon){
 
@@ -146,24 +131,36 @@ bool RayTracer::photonTrace(Scene *pScene, Photon *photon){
             }
 
             if (closestIntersection == NULL) {
-                //std::cout<<"::no intersection found:: \n";
+                // std::cout<<"::no intersection found:: \n";
                 return false;
             }else{
                 photon->SetIntersection(*closestIntersection);
-                //std::cout<<"::Intersection Found:: "<<photon->GetIntersection().point.x<<","<<photon->GetIntersection().point.y<<","<<photon->GetIntersection().point.z<<"\n";
+                // std::cout<<"::Intersection Found:: "<<photon->GetIntersection().point.x<<","<<photon->GetIntersection().point.y<<","<<photon->GetIntersection().point.z<<"\n";
                 result = true;
             }
            // std::cout<<result<<"result of photonTrace \n";
             return result;
 }
 
+RGBR_f RayTracer::photonMapShade(Scene* pScene, Intersection* closestIntersection)
+{
+    RGBR_f photonColor;
 
+    std::vector<Photon*> *photons = pScene->GetPhotons();
 
+    for(int i = 0; i < photons->size(); i++){
+        if(((closestIntersection->point - photons->at(i)->GetIntersection().point)).LengthSq() <= 0.09){
+            // std::cout << "Hit photonMapShade: " << (int) (255.0f / ((    (float) photons->size()) / 2.0f)) << std::endl;
 
+            // photonColor += RGBR_f(50, 0, 0, 255);
+            photonColor += RGBR_f(photons->at(i)->GetColor().r / 5, photons->at(i)->GetColor().g / 5, photons->at(i)->GetColor().b / 5, 255);
+        }
+    }
 
+    // std::cout << "Color for pixel: " << photonColor.r << ", " << photonColor.g << ", " << photonColor.b << std::endl;
 
-
-
+    return photonColor;
+}
 
 void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName){
     // begin
@@ -200,6 +197,11 @@ void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName)
 
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
+
+            if ((i % 50 == 0) && j == 0) {
+                std::cout << (((float) i) / width * 100) << "\% Complete" << std::endl;
+            }
+
             double pX = (2.0 * ((((double) i) + 0.5) / width) - 1.0) * scale * aspectRatio; // Perspective
             double pY = (1.0 - 2.0 * ((((double) j) + 0.5) / height)) * scale; // Perspective
 
@@ -240,7 +242,8 @@ void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName)
             }
 
             if (closestIntersection != NULL) { // We hit something! calculate the pixel color at that point
-                RGBR_f color = Shade(pScene, closestIntersection);
+                // RGBR_f color = Shade(pScene, closestIntersection);
+                RGBR_f color = photonMapShade(pScene, closestIntersection);
                 int clamped_r = std::max(0.0f, std::min(color.r, 255.0f));
                 int clamped_g = std::max(0.0f, std::min(color.g, 255.0f));
                 int clamped_b = std::max(0.0f, std::min(color.b, 255.0f));
@@ -263,11 +266,11 @@ void RayTracer::rayTrace(Scene *pScene, STVector2* imageSize, std::string fName)
     pImg->Save(fName);
 }
 
-
 void RayTracer::emitPhotons(Scene *pScene, int nrPhotons, int numBounces){
 
 
-    srand (time(NULL));                          //Ensure Same Photons Each Time, should make this settable in setup
+    // srand (time(NULL));                          //Ensure Same Photons Each Time, should make this settable in setup
+    srand (0);                          //Ensure Same Photons Each Time, should make this settable in setup
 
 
 //  for (int t = 0; t < nrTypes; t++)            //Initialize Photon Count to Zero for Each Object

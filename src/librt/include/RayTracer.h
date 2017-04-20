@@ -41,6 +41,7 @@ private:
     bool                        MinimumColor                                    (RGBR_f color);
 
     RGBR_f                      Shade                                           (Scene *pScene, Intersection *pIntersection);
+    RGBR_f                      photonMapShade                                  (Scene* pScene, Intersection* closestIntersection);
 
     STVector3					multVectMatrix						            (STVector3 rayOrigin);
 
